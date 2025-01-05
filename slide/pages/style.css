@@ -1,0 +1,18 @@
+.scrollable-div {
+    overflow-y: auto; /* Enables vertical scrolling */
+    max-height: 400px; /* Set a maximum height for the div */
+}
+
+.mermaid-zoom {
+    overflow: hidden;
+    position: relative;
+}
+
+.mermaid-zoom svg {
+    transition: transform 0.2s ease;
+    transform-origin: center center;
+}
+
+.mermaid-zoom:hover svg {
+    transform: scale(1.2); /* Adjust the scale factor as needed */
+}

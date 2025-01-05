@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+    <!-- Background -->
+    <rect width="800" height="600" fill="#ffffff"/>
+
+    <!-- Central API Hub -->
+    <circle cx="400" cy="240" r="60" fill="#3498db" opacity="0.9"/>
+    <text x="400" y="240" text-anchor="middle" font-family="Arial" font-size="16" fill="white" font-weight="bold">
+        API
+    </text>
+    <text x="400" y="260" text-anchor="middle" font-family="Arial" font-size="16" fill="white" font-weight="bold">
+        Design
+    </text>
+
+    <!-- Security Section -->
+    <g transform="translate(200,100)">
+        <rect width="160" height="100" rx="10" fill="#e74c3c" opacity="0.9"/>
+        <text x="80" y="20" text-anchor="middle" font-family="Arial" font-size="16" fill="white" font-weight="bold">Security</text>
+        <text x="80" y="40" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Authentication</text>
+        <text x="80" y="60" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Authorization</text>
+        <text x="80" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Encryption</text>
+    </g>
+
+    <!-- Performance Section -->
+    <g transform="translate(440,100)">
+        <rect width="160" height="100" rx="10" fill="#2ecc71" opacity="0.9"/>
+        <text x="80" y="20" text-anchor="middle" font-family="Arial" font-size="16" fill="white" font-weight="bold">Performance</text>
+        <text x="80" y="40" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Caching</text>
+        <text x="80" y="60" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Load Balancing</text>
+        <text x="80" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Optimization</text>
+    </g>
+
+    <!-- Governance Section -->
+    <g transform="translate(200,280)">
+        <rect width="160" height="100" rx="10" fill="#f1c40f" opacity="0.9"/>
+        <text x="80" y="20" text-anchor="middle" font-family="Arial" font-size="16" fill="white" font-weight="bold">Governance</text>
+        <text x="80" y="40" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Standards</text>
+        <text x="80" y="60" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Policies</text>
+        <text x="80" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Compliance</text>
+    </g>
+
+    <!-- Monitoring Section -->
+    <g transform="translate(440,280)">
+        <rect width="160" height="100" rx="10" fill="#9b59b6" opacity="0.9"/>
+        <text x="80" y="20" text-anchor="middle" font-family="Arial" font-size="16" fill="white" font-weight="bold">Monitoring</text>
+        <text x="80" y="40" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Analytics</text>
+        <text x="80" y="60" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Metrics</text>
+        <text x="80" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="white">- Alerts</text>
+    </g>
+
+    <!-- Maintenance Box -->
+    <g transform="translate(320,400)">
+        <rect width="160" height="60" rx="10" fill="#34495e" opacity="0.9"/>
+        <text x="80" y="15" text-anchor="middle" font-family="Arial" font-size="16" fill="white" font-weight="bold">Maintenance</text>
+        <text x="80" y="35" text-anchor="middle" font-family="Arial" font-size="12" fill="white">Lifecycle Management</text>
+    </g>
+
+    <!-- Connecting Lines -->
+    <g stroke="#95a5a6" stroke-width="2">
+        <!-- Security to Center -->
+        <line x1="280" y1="190" x2="360" y2="220"/>
+        <!-- Performance to Center -->
+        <line x1="520" y1="190" x2="440" y2="220"/>
+        <!-- Governance to Center -->
+        <line x1="280" y1="290" x2="360" y2="260"/>
+        <!-- Monitoring to Center -->
+        <line x1="520" y1="290" x2="440" y2="260"/>
+        <!-- Maintenance to Center -->
+        <line x1="400" y1="400" x2="400" y2="260"/>
+    </g>
+</svg>
