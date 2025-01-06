@@ -3,11 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
+
 	"net/http"
 	"os"
 	"os/signal"
 	"time"
+	"log"
 
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/handler"
@@ -17,11 +18,10 @@ import (
 	"api/config"
 	"api/internal/auth"
 	"api/internal/middleware"
-
 	"api/internal/monitoring"
 	"api/internal/subscription"
 	gql "api/pkg/graphql"
-	"api/pkg/graphql/directives"
+	 "api/pkg/graphql/directives"
 )
 
 var cfg *config.Config
@@ -30,6 +30,7 @@ func init() {
 	// Load configuration
 	cfg = config.NewConfig()
 }
+
 
 func main() {
 	shutdown, err := monitoring.InitTracer(viper.GetString("TRACE_EXPORTER_URL"))
@@ -52,12 +53,13 @@ func main() {
 		}
 	}()
 
-	schema, err := graphql.NewSchema(graphql.SchemaConfig{
+	 schema, err := graphql.NewSchema(graphql.SchemaConfig{
 		Query:        gql.RootQuery,
 		Mutation:     gql.RootMutation,
 		Subscription: gql.RootSubscription,
 		Directives:   append(graphql.SpecifiedDirectives, directives.SubstringDirective),
 	})
+
 	if err != nil {
 		panic(err)
 	}
@@ -116,7 +118,7 @@ func Handlers(graphqlHandler *handler.Handler) http.Handler {
 	rateLimitBurst := viper.GetInt("RATE_LIMIT_BURST")
 	limit := rate.Every((time.Duration(rateLimitReqSec) * time.Second))
 	execTimeOut := viper.GetInt("EXEC_TIME_OUT")
-	
+
 	auditLog := middleware.AuditLogMiddleware(graphqlHandler)
 	rateLimit := middleware.RateLimitMiddleware(limit, rateLimitBurst)(auditLog)
 	circuitBreaker := middleware.CircuitBreakerMiddleware(time.Duration(execTimeOut) * time.Second)(rateLimit)

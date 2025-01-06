@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"api/config"
-	"api/pkg/data/models"
+	"api/internal/handler"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -37,7 +37,7 @@ func generateSalt() string {
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	cors(w, r)
-	var user models.UserModel
+	var user User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -63,7 +63,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	// fmt.Println("Duration", time.Duration(config.TokenAge))
 	expirationTime := time.Now().Add(time.Duration(config.TokenAge) * time.Minute)
 
-	claims := &models.JwtClaims{
+	claims := &JwtClaims{
 		UserId:   userdb.UserId,
 		Username: userdb.Username,
 		StandardClaims: jwt.StandardClaims{
@@ -84,7 +84,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		Expires: expirationTime,
 	})
 
-	response := models.JwtToken{
+	response := JwtToken{
 		Token:     tokenString,
 		ExpiredAt: expirationTime.Unix(),
 	}
@@ -119,10 +119,10 @@ func AuthenticationHandler(next http.Handler) http.Handler {
 }
 
 // DecodeJWTToken decodes a JWT and verifies its signature with a secret key
-func DecodeJWTToken(tokenString, secretKey string) (*models.JwtClaims, error) {
+func DecodeJWTToken(tokenString, secretKey string) (*JwtClaims, error) {
 	config := config.NewConfig()
 	// Parse the token and validate the signature
-	token, err := jwt.ParseWithClaims(tokenString, &models.JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
 		// Check if the signing method is what we expect (HS256)
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Method)
@@ -137,7 +137,7 @@ func DecodeJWTToken(tokenString, secretKey string) (*models.JwtClaims, error) {
 	}
 
 	// Check if the token is valid and contains our expected claims
-	if claims, ok := token.Claims.(*models.JwtClaims); ok && token.Valid {
+	if claims, ok := token.Claims.(*JwtClaims); ok && token.Valid {
 		return claims, nil
 	}
 
@@ -177,54 +177,95 @@ func validateToken(tokenString string) (*jwt.Token, error) {
 
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	cors(w, r)
-	
-	var user models.UserModel
+
+	var user User
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		resp := handler.NewErrorResponse(
+			http.StatusBadRequest,
+			"Bad Request",
+			"INVALID_REQUEST",
+			"Invalid request body",
+			r.Header.Get("X-Request-ID"),
+		)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
 		return
 	}
 
-	// Validate required fields
 	if user.Username == "" || user.Password == "" {
-		http.Error(w, "Username and password are required", http.StatusBadRequest)
+		resp := handler.NewErrorResponse(
+			http.StatusBadRequest,
+			"Bad Request",
+			"MISSING_FIELDS",
+			"Username and password are required",
+			r.Header.Get("X-Request-ID"),
+		)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
 		return
 	}
 
 	userRepo := NewUserRepo()
-
-	// Check if username already exists
-	_, err = userRepo.GetUserByName(user.Username)
-	if err == nil {
-		http.Error(w, "Username already exists", http.StatusConflict)
+	exists, err := userRepo.ExistsUserByName(user.Username)
+	if err != nil {
+		resp := handler.NewErrorResponse(
+			http.StatusInternalServerError,
+			"Internal Server Error",
+			"DATABASE_ERROR",
+			"Database operation failed",
+			r.Header.Get("X-Request-ID"),
+		)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
 		return
 	}
 
-	// Generate salt and hash password
+	if exists {
+		resp := handler.NewErrorResponse(
+			http.StatusConflict,
+			"Conflict",
+			"USER_EXISTS",
+			"Username already exists",
+			r.Header.Get("X-Request-ID"),
+		)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
+		return
+	}
+
 	salt := generateSalt()
 	hashedPassword := HashString(user.Username + user.Password + salt)
 
-	// Create new user
-	newUser := models.UserModel{
-		Username: user.Username,
-		Password: hashedPassword,
-		Salt:     salt,
+	newUser := User{
+		Username:  user.Username,
+		Password:  hashedPassword,
+		Salt:      salt,
 		CreatedAt: time.Now(),
 		CreatedBy: user.Username,
+		StatusID:  1,
 	}
 
-	// Save user to database
 	err = userRepo.CreateUser(&newUser)
 	if err != nil {
-		http.Error(w, "Failed to create user", http.StatusInternalServerError)
+		resp := handler.NewErrorResponse(
+			http.StatusInternalServerError,
+			"Internal Server Error",
+			"REGISTRATION_FAILED",
+			"Failed to create user",
+			r.Header.Get("X-Request-ID"),
+		)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
 		return
 	}
 
-	// Return success response
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(map[string]string{
-		"message": "User registered successfully",
+	responseData := map[string]string{
 		"username": user.Username,
-	})
+		"message":  "User registered successfully",
+	}
+
+	resp := handler.NewResponse(http.StatusCreated, "Created", responseData, r.Header.Get("X-Request-ID"))
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
 }
