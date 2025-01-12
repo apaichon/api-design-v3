@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+    <!-- Background -->
+    <rect width="800" height="500" fill="#f8fafc"/>
+    
+    <!-- Title -->
+    <text x="400" y="40" text-anchor="middle" font-size="24" font-family="Arial" fill="#1e293b">
+        API Governance Flow
+    </text>
+
+    <!-- Incoming Request -->
+    <rect x="50" y="80" width="120" height="60" rx="10" fill="#60a5fa"/>
+    <text x="110" y="115" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        API Request
+    </text>
+
+    <!-- Version Check -->
+    <rect x="240" y="80" width="120" height="60" rx="10" fill="#f97316"/>
+    <text x="300" y="115" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Version Check
+    </text>
+
+    <!-- URI Standards -->
+    <rect x="430" y="80" width="120" height="60" rx="10" fill="#f97316"/>
+    <text x="490" y="115" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        URI Standards
+    </text>
+
+    <!-- Compliance Check -->
+    <rect x="620" y="80" width="120" height="60" rx="10" fill="#f97316"/>
+    <text x="680" y="115" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Compliance
+    </text>
+
+    <!-- API Handler -->
+    <rect x="620" y="200" width="120" height="60" rx="10" fill="#22c55e"/>
+    <text x="680" y="235" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        API Handler
+    </text>
+
+    <!-- Error Response -->
+    <rect x="430" y="320" width="120" height="60" rx="10" fill="#ef4444"/>
+    <text x="490" y="355" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Error Response
+    </text>
+
+    <!-- Arrows -->
+    <path d="M170 110 L230 110" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M360 110 L420 110" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M550 110 L610 110" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M680 140 L680 190" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M490 140 L490 310" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Arrow Definition -->
+    <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+        </marker>
+    </defs>
+
+    <!-- Governance Rules Box -->
+    <rect x="50" y="400" width="700" height="80" rx="10" fill="#f1f5f9"/>
+    <text x="70" y="425" font-size="14" font-family="Arial" fill="#334155">
+        <tspan x="70" dy="0">Governance Rules:</tspan>
+        <tspan x="70" dy="20">• Version Control: Minimum version, deprecation policies, sunset dates</tspan>
+        <tspan x="70" dy="20">• URI Standards: Path prefix, allowed methods, naming conventions</tspan>
+        <tspan x="400" dy="-20">• Compliance: API key, consent, data privacy, audit logging</tspan>
+    </text>
+</svg>

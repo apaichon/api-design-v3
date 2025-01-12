@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>privacy-regulations.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="data-privacy-regulations-for-apis">Data Privacy Regulations for APIs</h1>
+<h2 id="overview">Overview</h2>
+<p>This document outlines the key data privacy regulations affecting API implementations and provides technical requirements for compliance.</p>
+<h2 id="major-privacy-regulations">Major Privacy Regulations</h2>
+<h3 id="1-gdpr-general-data-protection-regulation">1. GDPR (General Data Protection Regulation)</h3>
+<h4 id="key-requirements">Key Requirements</h4>
+<ul>
+<li>Lawful basis for processing data</li>
+<li>Data minimization</li>
+<li>Purpose limitation</li>
+<li>Storage limitation</li>
+<li>Accuracy</li>
+<li>Integrity and confidentiality</li>
+<li>Accountability</li>
+</ul>
+<h4 id="technical-implementation">Technical Implementation</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"data_processing"</span>: {
+        <span class="hljs-attr">"legal_basis"</span>: <span class="hljs-string">"consent|contract|legal_obligation|vital_interests|public_task|legitimate_interests"</span>,
+        <span class="hljs-attr">"purpose"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"retention_period"</span>: <span class="hljs-string">"duration"</span>,
+        <span class="hljs-attr">"data_categories"</span>: [<span class="hljs-string">"personal"</span>, <span class="hljs-string">"sensitive"</span>, <span class="hljs-string">"biometric"</span>],
+        <span class="hljs-attr">"security_measures"</span>: [<span class="hljs-string">"encryption"</span>, <span class="hljs-string">"pseudonymization"</span>, <span class="hljs-string">"access_controls"</span>]
+    }
+}
+</div></code></pre>
+<h4 id="required-api-endpoints">Required API Endpoints</h4>
+<pre class="hljs"><code><div>GET /api/v1/privacy/data-export
+POST /api/v1/privacy/data-deletion
+GET /api/v1/privacy/processing-activities
+PUT /api/v1/privacy/consent-preferences
+</div></code></pre>
+<h3 id="2-ccpa-california-consumer-privacy-act">2. CCPA (California Consumer Privacy Act)</h3>
+<h4 id="key-requirements">Key Requirements</h4>
+<ul>
+<li>Right to know</li>
+<li>Right to delete</li>
+<li>Right to opt-out</li>
+<li>Right to non-discrimination</li>
+<li>Special rules for minors</li>
+</ul>
+<h4 id="technical-implementation">Technical Implementation</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"privacy_rights"</span>: {
+        <span class="hljs-attr">"data_collection_notice"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"opt_out_mechanism"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"deletion_process"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"age_verification"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"sale_of_data"</span>: <span class="hljs-literal">false</span>
+    }
+}
+</div></code></pre>
+<h4 id="required-headers">Required Headers</h4>
+<pre class="hljs"><code><div>X-CCPA-Opt-Out: true|false
+X-Data-Collection-Notice: string
+X-Privacy-Policy-Version: string
+</div></code></pre>
+<h3 id="3-hipaa-health-insurance-portability-and-accountability-act">3. HIPAA (Health Insurance Portability and Accountability Act)</h3>
+<h4 id="key-requirements">Key Requirements</h4>
+<ul>
+<li>Privacy Rule compliance</li>
+<li>Security Rule compliance</li>
+<li>Breach Notification Rule</li>
+<li>Patient rights</li>
+<li>Business Associate Agreements</li>
+</ul>
+<h4 id="technical-implementation">Technical Implementation</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"hipaa_compliance"</span>: {
+        <span class="hljs-attr">"phi_handling"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"minimum_necessary"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"encryption_required"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"audit_logging"</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">"access_controls"</span>: [<span class="hljs-string">"role_based"</span>, <span class="hljs-string">"user_based"</span>]
+    }
+}
+</div></code></pre>
+<h4 id="security-requirements">Security Requirements</h4>
+<ul>
+<li>Encryption at rest (AES-256)</li>
+<li>Encryption in transit (TLS 1.3)</li>
+<li>Access logging</li>
+<li>Authentication</li>
+<li>Authorization</li>
+</ul>
+<h2 id="implementation-guidelines">Implementation Guidelines</h2>
+<h3 id="1-data-collection">1. Data Collection</h3>
+<h4 id="consent-management">Consent Management</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"consent"</span>: {
+        <span class="hljs-attr">"user_id"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"ISO8601"</span>,
+        <span class="hljs-attr">"purposes"</span>: [<span class="hljs-string">"marketing"</span>, <span class="hljs-string">"analytics"</span>],
+        <span class="hljs-attr">"valid_until"</span>: <span class="hljs-string">"ISO8601"</span>,
+        <span class="hljs-attr">"proof"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"version"</span>: <span class="hljs-string">"string"</span>
+    }
+}
+</div></code></pre>
+<h4 id="data-minimization">Data Minimization</h4>
+<ul>
+<li>Collect only necessary data</li>
+<li>Define explicit purposes</li>
+<li>Implement automatic data purging</li>
+<li>Document data flows</li>
+</ul>
+<h3 id="2-data-storage">2. Data Storage</h3>
+<h4 id="encryption-requirements">Encryption Requirements</h4>
+<ul>
+<li>Use industry-standard encryption</li>
+<li>Implement key rotation</li>
+<li>Secure key management</li>
+<li>Regular security audits</li>
+</ul>
+<h4 id="data-retention">Data Retention</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"retention_policy"</span>: {
+        <span class="hljs-attr">"data_type"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"retention_period"</span>: <span class="hljs-string">"duration"</span>,
+        <span class="hljs-attr">"legal_basis"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"deletion_method"</span>: <span class="hljs-string">"string"</span>
+    }
+}
+</div></code></pre>
+<h3 id="3-data-access">3. Data Access</h3>
+<h4 id="access-control">Access Control</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"access_control"</span>: {
+        <span class="hljs-attr">"role"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"permissions"</span>: [<span class="hljs-string">"read"</span>, <span class="hljs-string">"write"</span>, <span class="hljs-string">"delete"</span>],
+        <span class="hljs-attr">"restrictions"</span>: [<span class="hljs-string">"pii"</span>, <span class="hljs-string">"phi"</span>, <span class="hljs-string">"financial"</span>],
+        <span class="hljs-attr">"purpose"</span>: <span class="hljs-string">"string"</span>
+    }
+}
+</div></code></pre>
+<h4 id="audit-logging">Audit Logging</h4>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"audit_log"</span>: {
+        <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"ISO8601"</span>,
+        <span class="hljs-attr">"user_id"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"action"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"data_accessed"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"purpose"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"legal_basis"</span>: <span class="hljs-string">"string"</span>
+    }
+}
+</div></code></pre>
+<h2 id="cross-border-data-transfers">Cross-Border Data Transfers</h2>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li>Standard Contractual Clauses (SCCs)</li>
+<li>Binding Corporate Rules (BCRs)</li>
+<li>Adequacy decisions</li>
+<li>Privacy Shield (where applicable)</li>
+</ul>
+<h3 id="implementation">Implementation</h3>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"data_transfer"</span>: {
+        <span class="hljs-attr">"origin_country"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"destination_country"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"transfer_mechanism"</span>: <span class="hljs-string">"SCC|BCR|adequacy"</span>,
+        <span class="hljs-attr">"safeguards"</span>: [<span class="hljs-string">"encryption"</span>, <span class="hljs-string">"pseudonymization"</span>],
+        <span class="hljs-attr">"documentation"</span>: [<span class="hljs-string">"contract"</span>, <span class="hljs-string">"impact_assessment"</span>]
+    }
+}
+</div></code></pre>
+<h2 id="breach-notification">Breach Notification</h2>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li>Detection mechanisms</li>
+<li>Notification procedures</li>
+<li>Documentation requirements</li>
+<li>Remediation plans</li>
+</ul>
+<h3 id="implementation">Implementation</h3>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"breach_notification"</span>: {
+        <span class="hljs-attr">"detection_date"</span>: <span class="hljs-string">"ISO8601"</span>,
+        <span class="hljs-attr">"notification_date"</span>: <span class="hljs-string">"ISO8601"</span>,
+        <span class="hljs-attr">"affected_data"</span>: [<span class="hljs-string">"types"</span>],
+        <span class="hljs-attr">"impact_assessment"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"remediation_steps"</span>: [<span class="hljs-string">"actions"</span>]
+    }
+}
+</div></code></pre>
+<h2 id="documentation-requirements">Documentation Requirements</h2>
+<h3 id="privacy-notices">Privacy Notices</h3>
+<ul>
+<li>Clear purpose specification</li>
+<li>Data collection details</li>
+<li>Processing activities</li>
+<li>User rights</li>
+<li>Contact information</li>
+</ul>
+<h3 id="technical-documentation">Technical Documentation</h3>
+<ul>
+<li>Data flow diagrams</li>
+<li>Security measures</li>
+<li>Access controls</li>
+<li>Encryption methods</li>
+<li>Audit procedures</li>
+</ul>
+<h2 id="compliance-monitoring">Compliance Monitoring</h2>
+<h3 id="regular-audits">Regular Audits</h3>
+<ul>
+<li>Privacy impact assessments</li>
+<li>Security assessments</li>
+<li>Compliance reviews</li>
+<li>Documentation updates</li>
+</ul>
+<h3 id="automated-monitoring">Automated Monitoring</h3>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"monitoring"</span>: {
+        <span class="hljs-attr">"privacy_checks"</span>: [<span class="hljs-string">"consent"</span>, <span class="hljs-string">"retention"</span>, <span class="hljs-string">"access"</span>],
+        <span class="hljs-attr">"security_checks"</span>: [<span class="hljs-string">"encryption"</span>, <span class="hljs-string">"access_control"</span>],
+        <span class="hljs-attr">"compliance_checks"</span>: [<span class="hljs-string">"gdpr"</span>, <span class="hljs-string">"ccpa"</span>, <span class="hljs-string">"hipaa"</span>],
+        <span class="hljs-attr">"frequency"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"reporting"</span>: <span class="hljs-string">"string"</span>
+    }
+}
+</div></code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li>
+<p>Privacy by Design</p>
+<ul>
+<li>Implement privacy controls from the start</li>
+<li>Regular privacy impact assessments</li>
+<li>Documentation of design decisions</li>
+</ul>
+</li>
+<li>
+<p>Data Protection</p>
+<ul>
+<li>Encryption in transit and at rest</li>
+<li>Regular security audits</li>
+<li>Access control mechanisms</li>
+</ul>
+</li>
+<li>
+<p>User Rights</p>
+<ul>
+<li>Easy-to-use privacy controls</li>
+<li>Transparent data practices</li>
+<li>Prompt response to requests</li>
+</ul>
+</li>
+<li>
+<p>Documentation</p>
+<ul>
+<li>Maintain detailed records</li>
+<li>Regular updates</li>
+<li>Clear procedures</li>
+</ul>
+</li>
+</ol>
+<h2 id="validation-and-testing">Validation and Testing</h2>
+<h3 id="privacy-controls-testing">Privacy Controls Testing</h3>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"privacy_test"</span>: {
+        <span class="hljs-attr">"control"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"test_method"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"frequency"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"results"</span>: <span class="hljs-string">"string"</span>,
+        <span class="hljs-attr">"remediation"</span>: <span class="hljs-string">"string"</span>
+    }
+}
+</div></code></pre>
+<h3 id="compliance-testing">Compliance Testing</h3>
+<ul>
+<li>Regular compliance checks</li>
+<li>Automated testing</li>
+<li>Documentation review</li>
+<li>Gap analysis</li>
+</ul>
+
+</body>
+</html>

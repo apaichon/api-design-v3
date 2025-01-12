@@ -30,19 +30,25 @@ func (cr *UserRepo) GetUsersBySearchText(searchText string, limit, offset int) (
 
 	rows, err := cr.DB.Query(query, limit, offset)
 
+	// fmt.Printf("searchText: %s \n result: %v \n error: %v", searchText, rows, err)
+
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 
+	// time.Sleep(30 * time.Second)
+
 	for rows.Next() {
 		var user User
 		err := rows.Scan(
-			&user.UserId,
+			&user.UserID,
 			&user.Username,
 			&user.Password,
 			&user.Salt,
 			&user.CreatedAt,
+			&user.CreatedBy,
+			&user.StatusID,
 		)
 		if err != nil {
 			return nil, err
@@ -53,6 +59,8 @@ func (cr *UserRepo) GetUsersBySearchText(searchText string, limit, offset int) (
 	if err := rows.Err(); err != nil {
 		return nil, err
 	}
+
+	// fmt.Println("users: ", len(users))
 
 	return users, nil
 }
@@ -68,7 +76,7 @@ func (cr *UserRepo) GetUserByID(id int) (*User, error) {
 	}
 
 	row.Scan(
-		&user.UserId,
+		&user.UserID,
 		&user.Username,
 		&user.Password,
 		&user.Salt,
@@ -90,7 +98,7 @@ func (cr *UserRepo) GetUserByName(name string) (*User, error) {
 	}
 
 	row.Scan(
-		&user.UserId,
+		&user.UserID,
 		&user.Username,
 		&user.Password,
 		&user.Salt,
@@ -124,7 +132,7 @@ func (cr *UserRepo) ExistsUserByName(name string) (bool, error) {
 func (cr *UserRepo) InsertUser(user *User) (int64, error) {
 	// Execute insert query to insert a new user into the database
 	result, err := cr.DB.Insert("INSERT INTO users (user_id,user_name,password,salt,created_at) VALUES ({?,?,?,?,?})",
-		user.UserId, user.Username, user.Password, user.Salt, user.CreatedAt)
+		user.UserID, user.Username, user.Password, user.Salt, user.CreatedAt)
 	if err != nil {
 		return 0, err
 	}
@@ -135,7 +143,7 @@ func (cr *UserRepo) InsertUser(user *User) (int64, error) {
 func (cr *UserRepo) UpdateUser(user *User) (int64, error) {
 	// Execute update query to update an existing user in the database
 	result, err := cr.DB.Update("UPDATE users SET user_id=?,user_name=?,password=?,salt=? where user_id=?",
-		user.UserId, user.Username, user.Password, user.Salt, user.UserId)
+		user.UserID, user.Username, user.Password, user.Salt, user.UserID)
 	if err != nil {
 		return 0, err
 	}

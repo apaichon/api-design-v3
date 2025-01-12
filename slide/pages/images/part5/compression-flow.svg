@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+    <!-- Background -->
+    <rect width="800" height="400" fill="#ffffff"/>
+    
+    <!-- Title -->
+    <text x="400" y="40" text-anchor="middle" font-size="24" font-family="Arial" fill="#1e293b">
+        Response Compression Flow
+    </text>
+
+    <!-- Request Box -->
+    <rect x="50" y="100" width="120" height="60" rx="10" fill="#60a5fa"/>
+    <text x="110" y="135" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        HTTP Request
+    </text>
+
+    <!-- Check Accept-Encoding -->
+    <rect x="240" y="100" width="140" height="60" rx="10" fill="#f97316"/>
+    <text x="310" y="125" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Check
+    </text>
+    <text x="310" y="145" text-anchor="middle" font-size="12" fill="white" font-family="Arial">
+        Accept-Encoding
+    </text>
+
+    <!-- Compress Response -->
+    <rect x="450" y="100" width="120" height="60" rx="10" fill="#22c55e"/>
+    <text x="510" y="135" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Compress
+    </text>
+
+    <!-- Send Response -->
+    <rect x="640" y="100" width="120" height="60" rx="10" fill="#8b5cf6"/>
+    <text x="700" y="135" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Send Response
+    </text>
+
+    <!-- No Compression Path -->
+    <rect x="450" y="200" width="120" height="60" rx="10" fill="#ef4444"/>
+    <text x="510" y="235" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        No Compression
+    </text>
+
+    <!-- Arrows -->
+    <path d="M170 130 L230 130" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M380 130 L440 130" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M570 130 L630 130" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M310 160 L310 230 L440 230" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M570 230 L700 160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Process Description -->
+    <rect x="50" y="300" width="700" height="80" rx="10" fill="#f1f5f9"/>
+    <text x="70" y="325" font-size="14" font-family="Arial" fill="#334155">
+        <tspan x="70" dy="0">Compression Process:</tspan>
+        <tspan x="70" dy="20">1. Check if client accepts gzip/deflate compression</tspan>
+        <tspan x="70" dy="20">2. Apply compression if content type matches and size > threshold</tspan>
+        <tspan x="400" dy="-20">3. Set Content-Encoding and update headers</tspan>
+    </text>
+
+    <!-- Arrow Definition -->
+    <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+        </marker>
+    </defs>
+</svg>

@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+    <!-- Background -->
+    <rect width="800" height="500" fill="#ffffff"/>
+    
+    <!-- Title -->
+    <text x="400" y="40" text-anchor="middle" font-size="24" font-family="Arial" fill="#1e293b">
+        Log Retention Process Flow
+    </text>
+
+    <!-- Log Files Box -->
+    <rect x="50" y="100" width="150" height="100" rx="10" fill="#60a5fa"/>
+    <text x="125" y="150" text-anchor="middle" font-size="16" fill="white" font-family="Arial">
+        Log Files
+    </text>
+
+    <!-- Retention Policies Box -->
+    <rect x="300" y="80" width="200" height="140" rx="10" fill="#f97316"/>
+    <text x="400" y="110" text-anchor="middle" font-size="16" fill="white" font-family="Arial">
+        Retention Policies
+    </text>
+    <text x="400" y="140" text-anchor="middle" font-size="12" fill="white" font-family="Arial">
+        Age Based
+    </text>
+    <text x="400" y="160" text-anchor="middle" font-size="12" fill="white" font-family="Arial">
+        Size Based
+    </text>
+    <text x="400" y="180" text-anchor="middle" font-size="12" fill="white" font-family="Arial">
+        Count Based
+    </text>
+
+    <!-- Archive Box -->
+    <rect x="600" y="100" width="150" height="100" rx="10" fill="#22c55e"/>
+    <text x="675" y="150" text-anchor="middle" font-size="16" fill="white" font-family="Arial">
+        Archive
+    </text>
+
+    <!-- Delete Box -->
+    <rect x="600" y="250" width="150" height="100" rx="10" fill="#ef4444"/>
+    <text x="675" y="300" text-anchor="middle" font-size="16" fill="white" font-family="Arial">
+        Delete
+    </text>
+
+    <!-- Arrows -->
+    <path d="M200 150 L290 150" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M500 150 L590 150" stroke="#22c55e" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M500 150 L590 300" stroke="#ef4444" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Process Description -->
+    <rect x="50" y="380" width="700" height="150" rx="10" fill="#f1f5f9"/>
+    <text x="70" y="410" font-size="14" font-family="Arial" fill="#334155">
+        <tspan x="70" dy="0">Retention Process:</tspan>
+        <tspan x="70" dy="25">1. Scan log files and apply retention policies (age, size, count)</tspan>
+        <tspan x="70" dy="25">2. Archive important logs (ERROR, FATAL) with compression</tspan>
+        <tspan x="70" dy="25">3. Delete old, non-critical logs</tspan>
+    </text>
+
+    <!-- Arrow Definition -->
+    <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+        </marker>
+    </defs>
+</svg>

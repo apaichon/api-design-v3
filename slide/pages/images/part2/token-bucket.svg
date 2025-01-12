@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+    <!-- Background -->
+    <rect width="800" height="400" fill="#f8fafc" />
+    
+    <!-- Title -->
+    <text x="400" y="40" text-anchor="middle" font-size="24" font-family="Arial" fill="#1e293b">
+        Understanding Rate Limit and Burst
+    </text>
+
+    <!-- Bucket Visualization -->
+    <path d="M200 150 L300 150 L320 300 L180 300 Z" fill="none" stroke="#334155" stroke-width="2"/>
+    
+    <!-- Tokens in bucket -->
+    <circle cx="210" cy="280" r="10" fill="#fbbf24"/>
+    <circle cx="230" cy="280" r="10" fill="#fbbf24"/>
+    <circle cx="250" cy="280" r="10" fill="#fbbf24"/>
+    <circle cx="270" cy="280" r="10" fill="#fbbf24"/>
+    
+    <!-- Token filling animation representation -->
+    <circle cx="250" cy="120" r="10" fill="#fbbf24" opacity="0.3"/>
+    <path d="M250 130 L250 160" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4,4"/>
+
+    <!-- Time axis -->
+    <line x1="400" y1="300" x2="700" y2="300" stroke="#334155" stroke-width="2"/>
+    <line x1="400" y1="295" x2="400" y2="305" stroke="#334155" stroke-width="2"/>
+    <line x1="700" y1="295" x2="700" y2="305" stroke="#334155" stroke-width="2"/>
+    
+    <!-- Rate visualization -->
+    <path d="M400 250 L700 250" stroke="#3b82f6" stroke-width="2" stroke-dasharray="5,5"/>
+    <path d="M400 200 L700 200" stroke="#ef4444" stroke-width="2"/>
+
+    <!-- Labels -->
+    <text x="250" y="330" text-anchor="middle" font-size="16" font-family="Arial" fill="#334155">Token Bucket</text>
+    
+    <!-- Rate Labels -->
+    <text x="380" y="250" text-anchor="end" font-size="14" font-family="Arial" fill="#3b82f6">Rate Limit</text>
+    <text x="380" y="200" text-anchor="end" font-size="14" font-family="Arial" fill="#ef4444">Burst Limit</text>
+
+    <!-- Description Box -->
+    <rect x="450" y="80" width="300" height="100" rx="10" fill="#f1f5f9"/>
+    <text x="460" y="100" font-size="14" font-family="Arial" fill="#334155">
+        <tspan x="460" dy="0">Limit: Requests per second (r/s)</tspan>
+        <tspan x="460" dy="20">Example: 10 r/s = 1 token every 100ms</tspan>
+        <tspan x="460" dy="20">Burst: Maximum tokens in bucket</tspan>
+        <tspan x="460" dy="20">Example: Burst of 50 allows temporary spikes</tspan>
+    </text>
+
+    <!-- Time markers -->
+    <text x="400" y="320" text-anchor="middle" font-size="12" font-family="Arial" fill="#334155">0s</text>
+    <text x="700" y="320" text-anchor="middle" font-size="12" font-family="Arial" fill="#334155">Time</text>
+</svg>

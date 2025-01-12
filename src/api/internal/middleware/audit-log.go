@@ -162,7 +162,7 @@ func getUserIdFromJWT(token string) int {
 	user, err := auth.DecodeJWTToken(token, config.SecretKey)
 	userId := -1
 	if err == nil {
-		userId = user.UserId
+		userId = user.UserID
 	}
 
 	return userId
@@ -188,3 +188,6 @@ func transformGraphResolves(query string) (string, error) {
 	methods := strings.Join(resolveDotNotation[:], ",")
 	return methods, nil
 }
+
+
+

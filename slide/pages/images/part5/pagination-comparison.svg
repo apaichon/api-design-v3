@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+    <!-- Background -->
+    <rect width="800" height="600" fill="#ffffff"/>
+    
+    <!-- Title -->
+    <text x="400" y="40" text-anchor="middle" font-size="24" font-family="Arial" fill="#1e293b">
+        Pagination Types Comparison
+    </text>
+
+    <!-- 1. Offset-Based -->
+    <rect x="50" y="80" width="700" height="80" rx="10" fill="#60a5fa" fill-opacity="0.1" stroke="#60a5fa"/>
+    <text x="70" y="110" font-size="18" font-family="Arial" fill="#1e293b">Offset-Based</text>
+    <text x="70" y="140" font-size="14" font-family="Arial" fill="#475569">
+        ?offset=20&amp;limit=10 → LIMIT 10 OFFSET 20
+    </text>
+
+    <!-- 2. Cursor-Based -->
+    <rect x="50" y="180" width="700" height="80" rx="10" fill="#f97316" fill-opacity="0.1" stroke="#f97316"/>
+    <text x="70" y="210" font-size="18" font-family="Arial" fill="#1e293b">Cursor-Based</text>
+    <text x="70" y="240" font-size="14" font-family="Arial" fill="#475569">
+        ?cursor=base64(timestamp:id)&amp;limit=10
+    </text>
+
+    <!-- 3. Keyset -->
+    <rect x="50" y="280" width="700" height="80" rx="10" fill="#22c55e" fill-opacity="0.1" stroke="#22c55e"/>
+    <text x="70" y="310" font-size="18" font-family="Arial" fill="#1e293b">Keyset (Seek)</text>
+    <text x="70" y="340" font-size="14" font-family="Arial" fill="#475569">
+        WHERE (created_at, id) > (timestamp, last_id) LIMIT 10
+    </text>
+
+    <!-- 4. Page-Based -->
+    <rect x="50" y="380" width="700" height="80" rx="10" fill="#8b5cf6" fill-opacity="0.1" stroke="#8b5cf6"/>
+    <text x="70" y="410" font-size="18" font-family="Arial" fill="#1e293b">Page-Based</text>
+    <text x="70" y="440" font-size="14" font-family="Arial" fill="#475569">
+        ?page=2&amp;page_size=10 → OFFSET (page-1)*size
+    </text>
+
+    <!-- 5. Time-Based -->
+    <rect x="50" y="480" width="700" height="80" rx="10" fill="#ec4899" fill-opacity="0.1" stroke="#ec4899"/>
+    <text x="70" y="510" font-size="18" font-family="Arial" fill="#1e293b">Time-Based</text>
+    <text x="70" y="540" font-size="14" font-family="Arial" fill="#475569">
+        ?start_time=2024-01-01&amp;end_time=2024-01-02&amp;limit=10
+    </text>
+</svg>

@@ -2,13 +2,16 @@ package middleware
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 	"time"
 
+	"api/internal/handler"
+
 	"github.com/graphql-go/graphql"
 )
-
 
 // Higher-order function that wraps a resolver with timeout handling
 func CircuitBreakerResolver(resolver graphql.FieldResolveFn, timeout time.Duration) graphql.FieldResolveFn {
@@ -21,54 +24,76 @@ func CircuitBreakerResolver(resolver graphql.FieldResolveFn, timeout time.Durati
 		done := make(chan struct{}, 1)
 		defer close(done)
 
+		var result interface{}
+		var resolverErr error
+
 		// Execute the resolver within a goroutine
 		go func() {
-			// Call the resolver
-			_, err := resolver(p)
-			if err != nil {
-				// If resolver returns an error, send it through the channel
-				done <- struct{}{}
-			}
+			result, resolverErr = resolver(p)
+			done <- struct{}{}
 		}()
 
 		// Wait for either completion or timeout
 		select {
 		case <-done:
-			return nil, errors.New("resolver execution error")
+			if resolverErr != nil {
+				return nil, resolverErr
+			}
+			return result, nil
 		case <-ctx.Done():
 			// Timeout occurred
-			return nil, errors.New("timeout occurred")
+			return nil, errors.New("the request exceeded the timeout limit")
 		}
 	}
 }
+
 // Middleware function signature
 type Middleware func(http.Handler) http.Handler
 
 func CircuitBreakerMiddleware(timeout time.Duration) Middleware {
-    return func(next http.Handler) http.Handler {
-        return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-            // Create a context with timeout
-            ctx, cancel := context.WithTimeout(r.Context(), timeout)
-            defer cancel()
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
-            // Create a channel to signal completion or timeout
-            done := make(chan struct{}, 1)
-            // defer close(done)
+			requestID, ok := r.Context().Value(requestContextKey).(string)
+			if !ok {
+				requestID = ""
+			}
+			fmt.Printf("CircuitBreakerMiddleware: Got RequestID: %s\n", requestID)
 
-            // Execute the handler within a goroutine
-            go func() {
-                next.ServeHTTP(w, r)
-                done <- struct{}{}
-            }()
+			// Create a context with timeout while preserving existing values
+			ctx, cancel := context.WithTimeout(r.Context(), timeout)
+			defer cancel()
 
-            // Wait for either completion or timeout
-            select {
-            case <-done:
-                return
-            case <-ctx.Done():
-                // Timeout occurred
-                http.Error(w, "Request timeout", http.StatusRequestTimeout)
-            }
-        })
-    }
+			// Create new request with the timeout context
+			r = r.WithContext(ctx)
+
+			// Create a channel to signal completion or timeout
+			done := make(chan struct{}, 1)
+
+			// Execute the handler within a goroutine
+			go func() {
+				next.ServeHTTP(w, r)
+				done <- struct{}{}
+			}()
+
+			// Wait for either completion or timeout
+			select {
+			case <-done:
+				return
+			case <-ctx.Done():
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusGatewayTimeout)
+
+				errResp := handler.NewErrorResponse(
+					http.StatusGatewayTimeout,
+					"Request Timeout",
+					"TIMEOUT_ERROR",
+					"The request exceeded the timeout limit",
+					requestID,
+				)
+
+				json.NewEncoder(w).Encode(errResp)
+			}
+		})
+	}
 }

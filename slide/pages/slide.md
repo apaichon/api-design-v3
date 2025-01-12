@@ -247,15 +247,15 @@ The design flow outlines the steps involved in the user registration process.
 - Data Validation
 - Error Handling
 - Authentication
+- Authorization
 - Access Log
 - Data Protection
-- Authorization
 - SQL Injection
 - Rate Limiting
 
 ---
 
-## Configuration Encryption
+## 2.1 Configuration Encryption
 
 ### Example Configuration
 
@@ -388,6 +388,497 @@ func NewConfig() *Config {
 
 ---
 
+## 2.2Data Validation
+
+- Validate Data Type
+```go
+var user User
+err := json.NewDecoder(r.Body).Decode(&user)
+if err != nil {
+	http.Error(w, err.Error(), http.StatusBadRequest)
+	return
+}
+```
+
+- Validate Data Length
+```go
+// Validate required fields
+	if user.Username == "" || user.Password == "" {
+		http.Error(w, "Username and password are required", http.StatusBadRequest)
+		return
+	}
+```
+
+- Validate Data Range
+```go
+if user.Age < 18 || user.Age > 100 {
+	http.Error(w, "Age must be between 18 and 100", http.StatusBadRequest)
+	return
+}
+```
+
+---
+
+## Data Validation (2)
+
+- Validate Data Format
+```go
+if !regexp.MustCompile(`^[a-zA-Z0-9]+$`).MatchString(user.Password) {
+	http.Error(w, "Password must contain only letters and numbers", http.StatusBadRequest)
+	return
+}
+```
+- Validate Data Constraint
+```go
+exists, err := userRepo.ExistsUserByName(user.Username)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusConflict)
+		return
+	}
+
+	if exists {
+		http.Error(w, "Username already exists", http.StatusConflict)
+		return
+	}
+```
+
+---
+
+## 2.3 Error Handling
+
+1. HTTP Status Code Best Practices
+ <img src="../images/part2/http-status-code.svg" alt="API Design Management Framework" style="width: 100%; height: 400px;" />
+
+
+---
+
+## Success Status (2xx)
+
+- **200**: OK - Standard success response
+- **201**: Created - Resource successfully created
+- **204**: No Content - Successful operation, no content returned
+
+---
+
+## Client Error Status (4xx)
+
+- **400**: Bad Request - Invalid parameters/format
+- **401**: Unauthorized - Authentication failed
+- **403**: Forbidden - Insufficient permissions
+- **404**: Not Found - Resource doesn't exist
+- **429**: Too Many Requests - Rate limit exceeded
+
+---
+
+## Server Error Status (5xx)
+
+- **500**: Internal Server Error - Unexpected server errors
+- **502**: Bad Gateway - Invalid response from upstream server
+- **503**: Service Unavailable - Server temporarily down
+- **504**: Gateway Timeout - Server timeout
+
+---
+
+# Error Response Structure
+
+## Basic Template:
+
+```json
+{
+    "status": 400,
+    "status_text": "Bad Request",
+    "error": {
+        "code": "ERROR_CODE",
+        "message": "User-friendly message",
+        "details": {
+            "field": "specific_field",
+            "reason": "detailed explanation"
+        },
+        "request_id": "unique_request_identifier",
+        "timestamp": "2024-01-06T12:00:00Z"
+    }
+}
+```
+
+---
+
+# Error Handling Best Practices
+
+## Consistency:
+
+- Use consistent error formats across all endpoints
+- Maintain uniform error codes and messages
+- Follow predictable status code usage
+
+## Security:
+
+- Never expose sensitive information in errors
+- Use generic messages for security-related errors
+- Log detailed errors server-side only
+
+--- 
+
+## Documentation:
+
+- Document all possible error codes
+- Provide clear error messages
+- Include remediation steps when applicable
+
+---
+
+## 2.4 Authentication
+
+### Authentication Method
+
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; margin-right: 10px;">
+        <ul>
+            <li><strong>Basic Authentication</strong></li>
+            <li><strong>OAuth 2.0</strong></li>
+            <li><strong>JWT</strong></li>
+            <li><strong>API Key</strong></li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <h3>Authentication Flow</h3>
+       <img src="../images/part2/authentication-flow.svg" alt="Authentication Flow" style="width: 100%; height: 400px;" />
+    </div>
+</div>
+
+---
+
+### Authentication Example
+
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+```go
+func LoginHandler(w http.ResponseWriter, r *http.Request) {
+
+	cors(w, r)
+	var user User
+	err := json.NewDecoder(r.Body).Decode(&user)
+	if err != nil {
+		resp := handler.NewErrorResponse(
+			http.StatusBadRequest,
+			"Bad Request",
+			"INVALID_REQUEST",
+			err.Error(),
+			r.Header.Get("X-Request-ID"),
+		)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
+		return
+	}
+
+	userRepo := NewUserRepo()
+	config := config.NewConfig()
+
+	userdb, ok := userRepo.GetUserByName(user.Username) // users[user.Username]
+	if ok != nil {
+		resp := handler.NewErrorResponse(
+			http.StatusUnauthorized,
+			"Unauthorized",
+			"INVALID_USERNAME",
+			"Invalid username",
+			r.Header.Get("X-Request-ID"),
+		)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
+		return
+	}
+	// fmt.Println("User")
+	hash := HashString(user.Username + user.Password + userdb.Salt)
+	// fmt.Println("UserDbPassword:", userdb.Password, "Hash:",hash, "UserNameDb:", userdb.Username, "username", user.Username )
+	if userdb.Password != hash {
+		resp := handler.NewErrorResponse(
+			http.StatusUnauthorized,
+			"Unauthorized",
+			"INVALID_CREDENTIALS",
+			"Invalid username or password",
+			r.Header.Get("X-Request-ID"),
+		)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
+		return
+	}
+
+	// fmt.Println("Duration", time.Duration(config.TokenAge))
+	expirationTime := time.Now().Add(time.Duration(config.TokenAge) * time.Minute)
+
+	claims := &JwtClaims{
+		UserId:   userdb.UserId,
+		Username: userdb.Username,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]byte(config.SecretKey))
+	if err != nil {
+		resp := handler.NewErrorResponse(
+			http.StatusInternalServerError,
+			"Internal Server Error",
+			"TOKEN_GENERATION_FAILED",
+			err.Error(),
+			r.Header.Get("X-Request-ID"),
+		)
+		w.Header().Set("Content-Type", "application/json")
+		json.NewEncoder(w).Encode(resp)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:    "token",
+		Value:   tokenString,
+		Expires: expirationTime,
+	})
+
+	// Updated response format
+	responseData := JwtToken{
+		Token:     tokenString,
+		ExpiredAt: expirationTime.Unix(),
+	}
+	resp := handler.NewResponse(http.StatusOK, "Success", responseData, r.Header.Get("X-Request-ID"))
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(resp)
+}
+
+```
+</div>
+
+
+---
+
+### JWT Middleware
+
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+
+```go
+func JWTMiddleware(excludedRoutes []string) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// Check if the request path is in the excluded routes
+			for _, route := range excludedRoutes {
+				if strings.HasPrefix(r.URL.Path, route) {
+					next.ServeHTTP(w, r) // Skip JWT validation
+					return
+				}
+			}
+
+			// Validate the JWT token
+			tokenString := getTokenFromRequest(r)
+			if tokenString == "" {
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+
+			token, err := validateToken(tokenString)
+			if err != nil || !token.Valid {
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+
+			// If valid, pass the request to the next handler
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+```
+</div>
+
+---
+
+## 2.5 Authorization
+
+```mermaid {scale: 0.6}
+erDiagram
+    USERS {
+        TEXT user_id PK "Primary Key"
+        TEXT username "Username"
+        TEXT password "Password"
+        DATETIME created_at "Created At"
+        TEXT created_by "Created By"
+        DATETIME updated_at "Updated At"
+        TEXT updated_by "Updated By"
+        INTEGER status_id "Status ID"
+    }
+
+    ROLES {
+        INTEGER role_id PK "Primary Key"
+        TEXT role_name "Role Name"
+        TEXT role_desc "Role Description"
+        BOOLEAN is_super_admin "Is Super Admin"
+        DATETIME created_at "Created At"
+        TEXT created_by "Created By"
+        DATETIME updated_at "Updated At"
+        TEXT updated_by "Updated By"
+        INTEGER status_id "Status ID"
+    }
+
+    USER_ROLES {
+        INTEGER user_role_id PK "Primary Key"
+        INTEGER role_id FK "Foreign Key to Roles"
+        TEXT user_id FK "Foreign Key to Users"
+        DATETIME created_at "Created At"
+        TEXT created_by "Created By"
+        DATETIME updated_at "Updated At"
+        TEXT updated_by "Updated By"
+        INTEGER status_id "Status ID"
+    }
+
+    ROLE_PERMISSIONS {
+        INTEGER role_permission_id PK "Primary Key"
+        TEXT role_permission_desc "Role Permission Description"
+        INTEGER resource_type_id "Resource Type ID"
+        TEXT resource_name "Resource Name"
+        BOOLEAN can_execute "Can Execute"
+        BOOLEAN can_read "Can Read"
+        BOOLEAN can_write "Can Write"
+        BOOLEAN can_delete "Can Delete"
+        DATETIME created_at "Created At"
+        TEXT created_by "Created By"
+        DATETIME updated_at "Updated At"
+        TEXT updated_by "Updated By"
+        INTEGER status_id "Status ID"
+    }
+
+    USERS ||--o{ USER_ROLES : "has"
+    ROLES ||--o{ USER_ROLES : "has"
+    ROLES ||--o{ ROLE_PERMISSIONS : "has"
+```
+
+---
+
+## 2.6 Access Logs
+```mermaid 
+erDiagram
+    ACCESS_LOGS {
+        INTEGER log_id PK "Primary Key"
+        TEXT user_id FK "Foreign Key to Users"
+        TEXT resource_name "Resource Name"
+        TEXT action "Action"
+        DATETIME timestamp "Timestamp"
+        TEXT ip_address "IP Address"
+        TEXT user_agent "User Agent"
+        INTEGER status_code "Status Code"
+        TEXT response "Response"
+    }
+```
+
+```json
+{
+  "log_id": 1,
+  "user_id": "user123",
+  "resource_name": "Login",
+  "action": "login",
+  "timestamp": "2023-10-01T12:00:00Z",
+  "ip_address": "192.168.1.1",
+  "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+  "status_code": 200,
+  "response": "Login successful"
+}
+```
+
+---
+
+## 2.7 Data Protection
+
+| Type | Original | Masked |
+|---------------------|-------------------------|-----------------------|
+| ID Card Number | 1234-5678-9012 | ****-****-9012 |
+| Credit Card Number | 1234 5678 9012 3456 | **** **** **** 3456 |
+| Mobile Number | +1-234-567-8901 | +1-***-***-8901 |
+
+- SQL Masking
+```sql
+create function mask_phone(phone varchar(20)) returns varchar(20)
+begin
+    return replace(phone, substring(phone, 4, 4), '****');
+end;
+```
+- Backend Masking
+```go
+func mask_phone(phone string) string {
+    return strings.Replace(phone, phone[4:8], "****", 1)
+}
+```
+
+---
+
+## 2.8 SQL Injection
+
+### SQL Injection Example
+
+```http
+GET http://host/api/products?textsearch=shoe;DELETE FROM users WHERE id = 1;
+```
+
+### SQL Injection Prevention
+
+- Execute single statements
+```go
+db.Query(sql)
+```
+- Database permissions protect delete and drop objects
+```sql
+GRANT DELETE, DROP ON users TO user;
+``` 
+- Execute permissions protect execute stored procedures
+```sql
+GRANT EXECUTE ON PROCEDURE sp_delete_user TO user;
+```
+
+
+---
+
+## 2.9 Rate Limiting
+
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; margin-right: 10px;">
+        <ul>
+            <li><strong>Security Benefits</strong></li>
+            <li>DDoS Protection</li>
+            <li>Mitigates automated attacks</li>
+            <li>Blocks brute force attempts</li>
+            <li>Prevents credential stuffing</li>
+            <li>Limits impact of bot traffic</li>
+            <li><strong>API Abuse Prevention</strong></li>
+            <li>Stops data scraping</li>
+            <li>Prevents unauthorized bulk operations</li>
+            <li>Protects sensitive endpoints</li>
+            <li>Identifies suspicious patterns</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+       <img src="../images/part2/rate-limit-diagram.svg" alt="Rate Limit Middleware" style="width: 100%; height: 400px;" />
+    </div>
+</div>
+
+---
+
+### Rate Limit Middleware
+
+```go
+func RateLimitMiddleware(limit rate.Limit, burst int) func(http.Handler) http.Handler {
+	limiter := rate.NewLimiter(limit, burst)
+
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if !limiter.Allow() {
+				http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
+				return
+			}
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+```
+---
+
+### Token Bucket Algorithm
+
+![Token Bucket Algorithm](../images/part2/token-bucket.svg)
+---
 
 # Part 3: Monitoring
 
@@ -433,11 +924,66 @@ func NewConfig() *Config {
     </div>
 </div>
 
+---
+  
+## Log Practice
+
+<img src="../images/part3/log-practices.svg" alt="Log P" style="width: 100%; height: 400px;" />
+
+---
+layout: two-cols
+---
+
+## API Log Middleware Practice
+
+
+#### LogResponseWriter
+- Custom wrapper around `http.ResponseWriter`
+- Captures status code and response length
+- Allows tracking of response metrics
+
+### APILogMiddleware
+- Basic logging middleware that captures:
+  - Request ID
+  - Log Level
+  - User ID
+  - Request method and path
+  - Client IP address
+  - Response status code
+  - Request duration
+  - Response size
+  - User agent
+  - Request Payload
+
+::right::
+
+<br/>
+<br/>
+
+### WithRequestID
+- Adds request tracking capability
+- Generates or propagates request IDs
+- Useful for tracing requests across services
+
+### Configurable Logger (APILogConfig)
+- Allows customization of logging behavior
+- Can log headers, cookies, and body
+- Supports redaction of sensitive information
+- Configurable through options
+
+---
+
+## Trace Middleware Practice
+
+- OpenTelemetry
 
 
 ---
 
-## Implement Monitoring
+## Metric Middleware Practice
+
+- Grafana
+
 ---
 
 # Part 4: Maintenance
@@ -470,6 +1016,22 @@ func NewConfig() *Config {
 
 ---
 
+## Versioning
+
+- Compatibility
+- Deprecation
+- Breaking Changes
+
+ <img src="../images/part4/version-flow.svg" alt="Version Flow" style="width: 100%; height: 400px;" />
+ 
+
+---
+
+### Log Retention
+ <img src="../images/part4/retention-flow.svg" alt="Log Retention" style="width: 100%; height: 400px;" />
+
+---
+
 # Part 5: Performance
 
 
@@ -499,12 +1061,43 @@ func NewConfig() *Config {
     </div>
 </div>
 
+---
+
+## Pagination
+
+ <img src="../images/part5/pagination-comparison.svg" alt="Pagination" style="width: 100%; height: 400px;" />
 
 ---
 
+### Response Compression
+ <img src="../images/part5/compression-flow.svg" alt="Compression" style="width: 100%; height: 400px;" />
+--- 
+
+## Caching
+
+- One Instance
+ <img src="../images/part5/local-cache-flow.svg" alt="Local Cache" style="width: 100%; height: 400px;" />
+
+---
+
+## Caching (2)
+- Multiple Instance
+ <img src="../images/part5/cache-flow.svg" alt="Compression" style="width: 100%; height: 400px;" />
+---
+
+## Load Management
+
+ <img src="../images/part5/load-management.svg" alt="Compression" style="width: 100%; height: 400px;" />
+
+
+---
+
+## Circuit Breaker
+
+ <img src="../images/part5/circuit-states.svg" alt="Circuit Breaker" style="width: 100%; height: 400px;" />
+---
+
 # Part 6: Governance
-
-
 
 <div style="display: flex; justify-content: space-between;">
     <div style="flex: 1; margin-right: 10px;">
@@ -528,11 +1121,153 @@ func NewConfig() *Config {
     </div>
 </div>
 
+---
 
+## API Documentation
+
+<img src="../images/part6/api-document.svg" alt="API Docs" style="width: 100%; height: 400px;" />
+
+<div style="text-align: right;">
+    <br/>
+    <a href="./api-docs.html">API Docs</a>
+</div>
+
+---
+
+## API Specification
+
+<img src="../images/part6/api-specification.svg" alt="API Specification" style="width: 100%; height: 400px;" />
+
+---
+
+## API key validation
+
+<img src="../images/part6/api-key-validation.svg" alt="API Key Validation" style="width: 100%; height: 400px;" />
+
+<div style="text-align: right;">
+    <br/>
+    <a href="./api-keys.html">API Keys</a>
+</div>
+---
+
+## Data privacy regulation
+### GDPR
+<img src="../images/part6/gdpr.svg" alt="GDPR" style="width: 100%; height: 400px;" />
+
+--- 
+
+### HIPAA
+<img src="../images/part6/hipaa.svg" alt="HIPAA" style="width: 100%; height: 400px;" />
+
+---
+
+## Implementation Guidelines
+<img src="../images/part6/data-privacy-framework.svg" alt="Implementation Guidelines" style="width: 100%; height: 400px;" />
+
+<div style="text-align: right;">
+    <br/>
+    <a href="./privacy-regulations.html">Data Privacy Regulations</a>
+</div>
+---
+
+## API Design Full Features
+
+```mermaid {scale: 0.3}
+flowchart TB
+    subgraph Client["Client Layer"]
+        C[Client]
+    end
+
+    subgraph Security["Security & Gateway Layer"]
+        LB["Load Balancer"]
+        APS["API Proxy Server"]
+        
+        subgraph SecurityModules["Security Modules"]
+            Auth["Authentication"]
+            Authz["Authorization"]
+            Val["Validation"]
+            Mask["Masking"]
+            SQLInj["SQL Injection Prevention"]
+            Rate["Rate Limiting"]
+        end
+        
+        subgraph ObservabilityModules["Observability"]
+            Log["API Logging"]
+            Trace["Traceability"]
+            Metric["Metrics"]
+        end
+        
+        subgraph ManagementModules["API Management"]
+            Ver["Versioning"]
+            LogRet["Log Retention"]
+            Pag["Pagination"]
+            Comp["Compression"]
+            Cache["Caching"]
+            LoadBal["Load Balancing"]
+            Circuit["Circuit Breaker"]
+            Doc["Documentation"]
+        end
+        
+        subgraph PrivacyModules["Privacy & Compliance"]
+            KeyVal["Key Validation"]
+            Privacy["Data Privacy"]
+            Consent["Consent Management"]
+        end
+    end
+
+    subgraph ServerLayer["Server Layer"]
+        RTS["API Real-Time Server"]
+        BS["API Batch Server"]
+        ECS["API Eventual Consistency Server"]
+    end
+
+    subgraph DataLayer["Data Layer"]
+        DB[(Database)]
+    end
+
+    C --> LB
+    LB --> APS
+    
+    APS --> SecurityModules
+    APS --> ObservabilityModules
+    APS --> ManagementModules
+    APS --> PrivacyModules
+    
+    APS --> RTS
+    APS --> BS
+    APS --> ECS
+    
+    RTS --> DB
+    BS --> DB
+    ECS --> DB
+
+    %% Styling
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px
+    classDef layer fill:#e4f2ff,stroke:#333,stroke-width:2px
+    classDef module fill:#fffde4,stroke:#333,stroke-width:2px
+    
+    class Client,Security,ServerLayer,DataLayer layer
+    class SecurityModules,ObservabilityModules,ManagementModules,PrivacyModules module
+
+```
+---
+
+### Workshop Challenge
+
+- Data Validation on Middleware support multiple rules and clean code
+- Implement Transform Middleware to transform request and response for masking sensitive data
+- Implement Pagination Cursor Tyeps
+- Implement Caching Middleware
+- Implement Rate Limiting Middleware by Tenant
+- Design Data Privacy Regulation Middleware
+- Design Consent verification Middleware
+- Design Audit logging Middleware
+- Generate API Documentation and API Specification
 
 ---
 
 # Questions?
 
 Thank you for your attention!
+
 

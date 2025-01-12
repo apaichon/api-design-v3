@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+    <!-- Background -->
+    <rect width="800" height="500" fill="#ffffff"/>
+    
+    <!-- Title -->
+    <text x="400" y="40" text-anchor="middle" font-size="24" font-family="Arial" fill="#1e293b">
+        API Version Management Flow
+    </text>
+
+    <!-- Version Timeline -->
+    <line x1="100" y1="100" x2="700" y2="100" stroke="#64748b" stroke-width="2"/>
+    
+    <!-- Version Points -->
+    <circle cx="200" cy="100" r="10" fill="#22c55e"/>
+    <circle cx="400" cy="100" r="10" fill="#f97316"/>
+    <circle cx="600" cy="100" r="10" fill="#ef4444"/>
+    
+    <!-- Version Labels -->
+    <text x="200" y="80" text-anchor="middle" font-size="14" fill="#22c55e" font-family="Arial">Active</text>
+    <text x="400" y="80" text-anchor="middle" font-size="14" fill="#f97316" font-family="Arial">Deprecated</text>
+    <text x="600" y="80" text-anchor="middle" font-size="14" fill="#ef4444" font-family="Arial">Sunset</text>
+
+    <!-- Version Process Boxes -->
+    <rect x="150" y="150" width="500" height="120" rx="10" fill="#f1f5f9"/>
+    <text x="170" y="180" font-size="14" font-family="Arial" fill="#334155">
+        <tspan x="170" dy="0">Version Management Process:</tspan>
+        <tspan x="170" dy="25">1. Active: Full support, recommended version</tspan>
+        <tspan x="170" dy="25">2. Deprecated: Limited support, upgrade warning</tspan>
+        <tspan x="170" dy="25">3. Sunset: No support, blocked access</tspan>
+    </text>
+
+    <!-- Breaking Changes Box -->
+    <rect x="150" y="300" width="500" height="150" rx="10" fill="#f1f5f9"/>
+    <text x="170" y="330" font-size="14" font-family="Arial" fill="#334155">
+        <tspan x="170" dy="0">Breaking Changes Management:</tspan>
+        <tspan x="170" dy="25">• Document changes in API specifications</tspan>
+        <tspan x="170" dy="25">• Provide migration guides</tspan>
+        <tspan x="170" dy="25">• Set deprecation timeline</tspan>
+        <tspan x="170" dy="25">• Implement version compatibility checks</tspan>
+    </text>
+</svg>

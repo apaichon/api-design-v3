@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+    <!-- Background -->
+    <rect width="800" height="500" fill="#ffffff"/>
+    
+    <!-- Title -->
+    <text x="400" y="40" text-anchor="middle" font-size="24" font-family="Arial" fill="#1e293b">
+        Local In-Memory Cache Flow
+    </text>
+
+    <!-- Request -->
+    <rect x="50" y="100" width="120" height="60" rx="10" fill="#60a5fa"/>
+    <text x="110" y="135" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        API Request
+    </text>
+
+    <!-- Cache Check -->
+    <rect x="240" y="100" width="120" height="60" rx="10" fill="#f97316"/>
+    <text x="300" y="125" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Check Local
+    </text>
+    <text x="300" y="145" text-anchor="middle" font-size="12" fill="white" font-family="Arial">
+        Cache
+    </text>
+
+    <!-- Handler -->
+    <rect x="430" y="100" width="120" height="60" rx="10" fill="#22c55e"/>
+    <text x="490" y="135" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        API Handler
+    </text>
+
+    <!-- Cache Store -->
+    <rect x="620" y="100" width="120" height="60" rx="10" fill="#8b5cf6"/>
+    <text x="680" y="125" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Store in
+    </text>
+    <text x="680" y="145" text-anchor="middle" font-size="12" fill="white" font-family="Arial">
+        Memory
+    </text>
+
+    <!-- Cache Hit Response -->
+    <rect x="240" y="200" width="120" height="60" rx="10" fill="#22c55e"/>
+    <text x="300" y="235" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Cache Hit
+    </text>
+
+    <!-- Cleanup Process -->
+    <rect x="240" y="300" width="500" height="60" rx="10" fill="#ef4444"/>
+    <text x="490" y="325" text-anchor="middle" font-size="14" fill="white" font-family="Arial">
+        Cleanup Process
+    </text>
+    <text x="490" y="345" text-anchor="middle" font-size="12" fill="white" font-family="Arial">
+        (Removes expired entries and maintains size limits)
+    </text>
+
+    <!-- Arrows -->
+    <path d="M170 130 L230 130" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M360 130 L420 130" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M550 130 L610 130" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M300 160 L300 190" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+    <path d="M300 260 L110 160" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+
+    <!-- Legend -->
+    <rect x="50" y="400" width="700" height="80" rx="10" fill="#f1f5f9"/>
+    <text x="70" y="425" font-size="14" font-family="Arial" fill="#334155">
+        <tspan x="70" dy="0">Cache Features:</tspan>
+        <tspan x="70" dy="20">1. Thread-safe operations using sync.Map</tspan>
+        <tspan x="70" dy="20">2. Automatic cleanup of expired entries</tspan>
+        <tspan x="400" dy="-20">3. Size-based eviction with LRU strategy</tspan>
+    </text>
+
+    <!-- Arrow Definition -->
+    <defs>
+        <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+            <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+        </marker>
+    </defs>
+</svg>

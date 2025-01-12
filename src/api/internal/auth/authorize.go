@@ -1,16 +1,19 @@
 package auth
 
 import (
-	"fmt"
-	"errors"
 	"api/config"
-	"api/pkg/data/models"
+	"errors"
+	"fmt"
+	"net/http"
+
 	"github.com/graphql-go/graphql"
 )
 
 var roleRepo RoleRepo
 var appConfig config.Config
+
 type ContextKey string
+
 const userKey = ContextKey("user")
 
 func init() {
@@ -33,7 +36,7 @@ func (auth *AuthorizeWorkflow) IsSuperAdmin(userId int) *AuthorizeWorkflow {
 	return auth
 }
 
-func (auth *AuthorizeWorkflow) GetUserIDFromToken( p graphql.ResolveParams) *AuthorizeWorkflow {
+func (auth *AuthorizeWorkflow) GetUserIDFromToken(p graphql.ResolveParams) *AuthorizeWorkflow {
 	userKey := ContextKey("user")
 	tokenString, _ := p.Context.Value(userKey).(string)
 	claims, err := DecodeJWTToken(tokenString, appConfig.SecretKey)
@@ -42,22 +45,6 @@ func (auth *AuthorizeWorkflow) GetUserIDFromToken( p graphql.ResolveParams) *Aut
 		auth.addError(errors.New("token expired"))
 	}
 	auth.setResult(claims)
-	return auth
-}
-
-func (auth *AuthorizeWorkflow) GetRosolvePermission(userId int, resolveName string) *AuthorizeWorkflow {
-	permission, err := roleRepo.GetUserRoleResolvePermissionByUserID(userId, resolveName)
-
-	if err != nil {
-		auth.addError(fmt.Errorf("unauthorized: missing %s permission. error:%s", resolveName, err))
-	}
-
-	canExecute :=false
-	if  permission.CanExecute != nil {
-		canExecute = *permission.CanExecute
-	}
-	auth.setResult(canExecute)
-	
 	return auth
 }
 
@@ -82,87 +69,82 @@ func (auth *AuthorizeWorkflow) setResult(res interface{}) *AuthorizeWorkflow {
 	return auth
 }
 
-
-// Middleware to enforce authorization based on permission
-func AuthorizeResolver(resovleName string, next func(p graphql.ResolveParams) (interface{}, error)) func(p graphql.ResolveParams) (interface{}, error) {
-	return func(p graphql.ResolveParams) (interface{}, error) {
-
-		tokenString, _ := p.Context.Value(userKey).(string)
-		config := config.NewConfig()
-		claims, err := DecodeJWTToken(tokenString, config.SecretKey)
-
-		if err != nil {
-			fmt.Printf("\nerror:%s", err)
-			return nil, errors.New("token expired")
-		}
-
-		// Check if the user has the required permission
-		roleRepo := NewRoleRepo()
-		isSuperAdmin, err := roleRepo.GetUserIsSuperAdminByUserID(claims.UserId)
-		
-		if err != nil {
-			return nil, err
-		}
-
-		if isSuperAdmin {
-			return next(p)
-		}
-
-		permission, err := roleRepo.GetUserRoleResolvePermissionByUserID(claims.UserId, resovleName)
-
-		if err != nil {
-			return nil, fmt.Errorf("unauthorized: missing %s permission. error:%s", resovleName, err)
-		}
-
-		canExecute :=false
-		if  permission.CanExecute != nil {
-			canExecute = *permission.CanExecute
-		}
-
-		if !permission.IsSuperAdmin && !canExecute {
-			return nil, fmt.Errorf("unauthorized: missing %s permission", resovleName)
-		}
-
-		// Execute the resolver if permission is granted
-		return next(p)
-	}
-}
-
-
-// Middleware to enforce authorization based on permission
-func AuthorizeResolverClean(resovleName string, next func(p graphql.ResolveParams) (interface{}, error)) func(p graphql.ResolveParams) (interface{}, error) {
-	return func(p graphql.ResolveParams) (interface{}, error) {
-
-		wf := &AuthorizeWorkflow{}
-		user := wf.GetUserIDFromToken(p).GetResult().(*models.JwtClaims)
-		isSuperAdmin := wf.IsSuperAdmin(user.UserId).GetResult().(bool)
-
-		if isSuperAdmin {
-			return next(p)
-		}
-
-		canExecute := wf.GetRosolvePermission(user.UserId, resovleName).GetResult().(bool)
-
-		if canExecute {
-			return next(p)
-		}
-		wf.addError(fmt.Errorf("unauthorized: missing %s permission", resovleName))
-
-		errors := wf.GetError().(error)
-
-		if errors !=nil {
-			return nil, errors
-		}
-		
-		return next(p)
-	}
-}
-
-func GetUserName(p graphql.ResolveParams)(JwtClaims, error) {
+func GetUserName(p graphql.ResolveParams) (JwtClaims, error) {
 	tokenString, _ := p.Context.Value(userKey).(string)
-		config := config.NewConfig()
-		claim, err := DecodeJWTToken(tokenString, config.SecretKey)
-		return *claim, err
+	config := config.NewConfig()
+	claim, err := DecodeJWTToken(tokenString, config.SecretKey)
+	return *claim, err
 }
 
+func GetUserPermission(r *http.Request) ([]*UserPermissionView, error) {
+	tokenString := getTokenFromRequest(r)
+	claims, err := DecodeJWTToken(tokenString, config.SecretKey)
+	if err != nil {
+		return nil, err
+	}
+	userPermissionRepo := NewUserPermissionRepo()
+	userPermission, err := userPermissionRepo.GetUserPermissionView(claims.UserID)
+	if err != nil {
+		return nil, err
+	}
+	return userPermission, nil
+}
 
+func HasUserApiPermission(r *http.Request) (bool, error) {
+	tokenString := getTokenFromRequest(r)
+	claims, err := DecodeJWTToken(tokenString, config.SecretKey)
+	if err != nil {
+		return false, err
+	}
+
+	userPermissionRepo := NewUserPermissionRepo()
+
+	// fmt.Println("claims", claims.UserID)
+
+	isSuperAdmin, err := userPermissionRepo.IsSuperAdmin(claims.UserID)
+	if err != nil {
+		fmt.Printf("err:%v", err)
+		return false, err
+	}
+
+	if isSuperAdmin {
+		return true, nil
+	}
+
+	userPermission, err := userPermissionRepo.GetUserApiPermissionView(claims.UserID, r.URL.Path)
+	// fmt.Printf("userPermission:%v, err:%v", userPermission, err)
+
+	if err != nil {
+		return false, err
+	}
+	method := r.Method
+
+	// fmt.Printf("userPermission:%v", userPermission)
+
+	switch method {
+	case http.MethodGet:
+		return userPermission.CanRead, nil
+	case http.MethodPost:
+		return userPermission.CanWrite, nil
+	case http.MethodPut:
+		return userPermission.CanWrite, nil
+	case http.MethodDelete:
+		return userPermission.CanDelete, nil
+	}
+	return false, nil
+}
+
+func AuthorizeUserMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		cors(w, r)
+
+		authorized, err := HasUserApiPermission(r)
+		if err != nil || !authorized {
+			http.Error(w, "Unauthorized", http.StatusUnauthorized)
+			return
+		}
+		fmt.Println("authorized", authorized)
+
+		next.ServeHTTP(w, r)
+	})
+}

@@ -1,8 +1,6 @@
 package graphql
 
 import (
-	// "strconv"
-	"api/internal/auth"
 	"api/internal/cache"
 	"api/internal/monitoring"
 	"api/internal/subscription"
@@ -56,19 +54,19 @@ var ContactQueriesType = graphql.NewObject(graphql.ObjectConfig{
 		"gets": &graphql.Field{
 			Type:    graphql.NewList(ContactGraphQLType),
 			Args:    SearhTextQueryArgument,
-			Resolve: auth.AuthorizeResolverClean("contacts.gets", monitoring.TraceResolver(cache.GetCacheResolver(resolvers.GetContactResolve))),
+			Resolve: monitoring.TraceResolver(cache.GetCacheResolver(resolvers.GetContactResolve)),
 		},
 		"getPagination": &graphql.Field{
 			Type: ContactPaginationGraphQLType,
 			Args: SearhTextPaginationQueryArgument,
 			Resolve:// auth.AuthorizeResolverClean("contacts.getPagination", cache.GetCacheResolver(resolvers.GetContactsPaginationResolve)),
-			auth.AuthorizeResolverClean("contacts.getPagination", monitoring.TraceResolver(cache.GetCacheResolver(resolvers.GetContactsPaginationResolve))),
+			 monitoring.TraceResolver(cache.GetCacheResolver(resolvers.GetContactsPaginationResolve)),
 		},
 		"getById": &graphql.Field{
 			Type: ContactGraphQLType,
 			Args: IdArgument,
 			Resolve:// auth.AuthorizeResolverClean("contacts.getById", cache.GetCacheResolver(resolvers.GetContactByIdResolve)),
-			auth.AuthorizeResolverClean("contacts.getById", monitoring.TraceResolver(cache.GetCacheResolver(resolvers.GetContactByIdResolve))),
+			 monitoring.TraceResolver(cache.GetCacheResolver(resolvers.GetContactByIdResolve)),
 		},
 	},
 })
@@ -98,7 +96,7 @@ var ContactMutationsType = graphql.NewObject(graphql.ObjectConfig{
 			Type: ContactGraphQLType,
 			Args: CreateContactArgument,
 			Resolve:// auth.AuthorizeResolverClean("contactMutations.createContact", resolvers.CreateContactResolve),
-			auth.AuthorizeResolverClean("contactMutations.createContact", monitoring.TraceResolver(cache.GetCacheResolver(resolvers.CreateContactResolve))),
+			monitoring.TraceResolver(cache.GetCacheResolver(resolvers.CreateContactResolve)),
 		},
 		"createContacts": &graphql.Field{
 			Type:    StatusGraphQLType,
@@ -108,12 +106,12 @@ var ContactMutationsType = graphql.NewObject(graphql.ObjectConfig{
 		"updateContact": &graphql.Field{
 			Type:    ContactGraphQLType,
 			Args:    UpdateContactArgument,
-			Resolve: auth.AuthorizeResolverClean("contactMutations.updateContact", resolvers.UpdateContactResolve),
+			Resolve:  resolvers.UpdateContactResolve,
 		},
 		"deleteContact": &graphql.Field{
 			Type:    StatusGraphQLType,
 			Args:    IdArgument,
-			Resolve: auth.AuthorizeResolverClean("contactMutations.deleteContact", resolvers.DeleteContactResolve),
+			Resolve:  resolvers.DeleteContactResolve,
 		},
 	},
 })
