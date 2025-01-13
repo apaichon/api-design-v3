@@ -78,3 +78,16 @@ func (r *Response) WithPagination(page, perPage, total int) *Response {
 	r.Meta.Total = total
 	return r
 }
+
+// NewSuccessResponse creates a new success response
+func NewSuccessResponse(status int, statusText string, data interface{}, message string, requestID string) *Response {
+	return &Response{
+		Status:     status,
+		StatusText: statusText,
+		Data:       data,
+		Meta: &MetaData{
+			RequestID: requestID,
+			Timestamp: time.Now().UTC(),
+		},
+	}
+}

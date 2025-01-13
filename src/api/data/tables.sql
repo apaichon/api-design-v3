@@ -100,6 +100,17 @@ CREATE TABLE api_logs (
 
 select * from api_logs
 
+select * from roles
+
+select * from payments
+
+SELECT COUNT(*) FROM payments 
+                WHERE payment_method LIKE '%john%' OR pay_to LIKE '%john%' OR note LIKE '%john%'
+
+INSERT INTO user_roles (role_id, user_id, created_at, created_by, updated_at, updated_by, status_id) VALUES
+(1, 6, datetime('now'), 'system', datetime('now'), 'system', 1)
+
+
 -- Sample data for roles
 INSERT INTO roles (role_id, role_name, role_desc, is_super_admin, created_at, created_by, updated_at, updated_by, status_id) VALUES
 (1, 'admin', 'System Administrator', true, datetime('now'), 'system', datetime('now'), 'system', 1),
@@ -119,8 +130,9 @@ INSERT INTO role_permissions (role_id, resource_type_id, resource_name, can_exec
 (3, 3, 'products', true, true, true, false, datetime('now'), 'system', datetime('now'), 'system', 1),
 (4, 4, 'public', false, true, false, false, datetime('now'), 'system', datetime('now'), 'system', 1);
 
-
+select * from  vw_user_permissions
 drop view vw_user_permissions;
+select * from payments
 -- Create a view that combines roles, user_roles, and role_permissions
 CREATE VIEW vw_user_permissions AS
 SELECT 

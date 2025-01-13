@@ -99,6 +99,17 @@ func (sc *SQLiteInMemClient) Remove(key string) error {
 }
 
 // Remove removes the specified key from the SQLite database.
-func (sc *SQLiteInMemClient) Removes(key string)  {
+func (sc *SQLiteInMemClient) Removes(key string) {
 	sc.db.Exec("DELETE FROM cache WHERE key Like ?", "%"+key+"*%")
+}
+
+func (c *SQLiteInMemClient) HGet(key string) ([]byte, error) {
+	var value string
+	err := c.db.QueryRow("SELECT value FROM cache WHERE key = ?", key).Scan(&value)
+	return []byte(value), err
+}
+
+func (c *SQLiteInMemClient) HSet(key []byte, value []byte) error {
+	_, err := c.db.Exec("INSERT OR REPLACE INTO cache (key, value) VALUES (?, ?)", key, value)
+	return err
 }

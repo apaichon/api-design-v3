@@ -3,16 +3,16 @@
 - Autorization => Done
 - Validation => Done
 - Masking => Done
-- SQL Injection 
+- SQL Injection => Done
 - Rate Limiting => Done
 - Api Logging => Done
 - Traceability => Done
 - Metric
 - Versioning 
 - Log Retention => Done
-- Pagination
+- Pagination => Done
 - Compression => Done
-- Caching
+- Caching => Done
 - Load Balancing
 - Circuit Breaker => Done
 - Documentation

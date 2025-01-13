@@ -33,6 +33,8 @@ type Cache struct {
 type CacheDB interface {
 	Get(key string) (string, error)
 	Set(key, value string) error
+	HSet(key []byte, value []byte) error
+	HGet(key string) ([]byte, error)
 	Remove(key string) error
 	Removes(key string)
 	Close() error
@@ -43,15 +45,15 @@ func NewCache(backend CacheBackend) *Cache {
 	var db CacheDB
 	switch backend {
 	case RedisBackend:
-		db,err := GetRedisInstance()
-		if (err !=nil) {
+		db, err := GetRedisInstance()
+		if err != nil {
 			panic(err)
 		}
 		return &Cache{backend: backend, db: db}
 	case SQLiteBackend:
 		// db = &SQLiteInMemClient{}
-		db,err := GetSqliteInMemInstance()
-		if (err !=nil) {
+		db, err := GetSqliteInMemInstance()
+		if err != nil {
 			panic(err)
 		}
 		return &Cache{backend: backend, db: db}
@@ -69,6 +71,14 @@ func (c *Cache) Get(key string) (string, error) {
 // Set sets the value associated with the given key in the cache.
 func (c *Cache) Set(key, value string) error {
 	return c.db.Set(key, value)
+}
+
+func (c *Cache) HSet(key, value []byte) error {
+	return c.db.HSet(key, value)
+}
+
+func (c *Cache) HGet(key string) ([]byte, error) {
+	return c.db.HGet(key)
 }
 
 // Remove removes the specified key from the cache.

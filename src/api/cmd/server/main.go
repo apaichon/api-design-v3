@@ -15,6 +15,7 @@ import (
 	"api/internal/auth"
 	"api/internal/middleware"
 	"api/internal/monitoring"
+	"api/internal/payment"
 )
 
 var cfg *config.Config
@@ -44,15 +45,23 @@ func main() {
 	mux.HandleFunc("/api/register", auth.RegisterHandler)
 	mux.HandleFunc("/api/logout", auth.LogoutHandler)
 	mux.HandleFunc("/api/users", auth.GetUsersHandler)
+	mux.HandleFunc("/api/payments", payment.GetPaymentsHandler)
+	mux.HandleFunc("/api/payments/create", payment.CreatePaymentHandler)
+	mux.HandleFunc("/api/payments/update", payment.UpdatePaymentHandler)
+	mux.HandleFunc("/api/payments/delete", payment.DeletePaymentHandler)
+	mux.HandleFunc("/api/payments/search", payment.SearchPaymentsHandler)
 
 	handler := middleware.ChainMiddleware(
 		mux,
 		middleware.GzipMiddleware,
+		middleware.CacheMiddleware(middleware.NewCacheConfig()),
 		middleware.ApiLogMiddleware,
 		middleware.TracingMiddleware,
 		middleware.JWTMiddleware([]string{"/api/login", "/api/register", "/api/logout"}),
 		middleware.CircuitBreakerMiddleware(10*time.Second),
 		middleware.RateLimitMiddleware(1, 10),
+		middleware.RequestContextMiddleware,
+		middleware.CorsMiddleware,
 	)
 
 	// Create server with configured handler

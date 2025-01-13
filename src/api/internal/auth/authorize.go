@@ -102,6 +102,7 @@ func HasUserApiPermission(r *http.Request) (bool, error) {
 	// fmt.Println("claims", claims.UserID)
 
 	isSuperAdmin, err := userPermissionRepo.IsSuperAdmin(claims.UserID)
+	fmt.Printf("isSuperAdmin:%v, err:%v", isSuperAdmin, err)
 	if err != nil {
 		fmt.Printf("err:%v", err)
 		return false, err

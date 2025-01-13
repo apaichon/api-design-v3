@@ -146,7 +146,8 @@ func (li *Logger) WriteApiLogToFile(logEntry ApiLog) {
 	logFilePath := filepath.Join(relativePath, logFileName)
 	absolutePath, err := filepath.Abs(logFilePath)
 	if err != nil {
-		log.Fatalf("Error obtaining absolute path: %v", err)
+		log.Printf("Error obtaining absolute path: %v", err)
+		return
 	}
 
 	// Use a mutex to ensure thread safety
@@ -164,19 +165,21 @@ func (li *Logger) WriteApiLogToFile(logEntry ApiLog) {
 		// Open the new file
 		li.currentFile, err = os.OpenFile(absolutePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
-			log.Fatalf("Error opening log file: %v", err)
+			log.Printf("Error opening log file: %v", err)
 		}
 	}
 
 	// Write the log entry as JSON to the file
 	jsonData, err := json.Marshal(logEntry)
 	if err != nil {
-		log.Fatalf("Error marshaling log data: %v", err)
+		log.Printf("Error marshaling log data: %v", err)
+		return
 	}
 
 	_, err = li.currentFile.Write(append(jsonData, '\n')) // Add newline
 	if err != nil {
-		log.Fatalf("Error writing to log file: %v", err)
+		log.Printf("Error writing to log file: %v", err)
+		return
 	}
 }
 

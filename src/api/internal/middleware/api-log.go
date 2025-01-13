@@ -18,7 +18,13 @@ import (
 // ResponseRecorder captures the response
 type ResponseRecorder struct {
 	http.ResponseWriter
-	Body *bytes.Buffer
+	Body   *bytes.Buffer
+	Status int
+}
+
+func (r *ResponseRecorder) WriteHeader(statusCode int) {
+	r.Status = statusCode
+	r.ResponseWriter.WriteHeader(statusCode)
 }
 
 func (r *ResponseRecorder) Write(b []byte) (int, error) {
@@ -71,6 +77,7 @@ func ApiLogMiddleware(next http.Handler) http.Handler {
 
 		// Call the next handler
 		next.ServeHTTP(recorder, r)
+
 		writeApiLog(r, recorder, body, start)
 	})
 }
@@ -83,10 +90,10 @@ func writeApiLog(r *http.Request, w http.ResponseWriter, body []byte, start time
 	}
 
 	fmt.Printf("Audit Log: %+v\n", logEntry)
-	auditLog := logger.GetLogInitializer()
+	apiLog := logger.GetLogInitializer()
 
 	// Start the log writing Go routine
-	go auditLog.WriteApiLogToFile(*logEntry)
+	go apiLog.WriteApiLogToFile(*logEntry)
 }
 
 func getRequestData(r *http.Request, body []byte) string {
@@ -117,6 +124,7 @@ func prepareApiLog(r *http.Request, w http.ResponseWriter, body []byte, start ti
 	device := ua.Model()
 	userId := getUserIdFromJWT(token)
 	status := getStatusCode(w)
+	fmt.Printf("Status: %+v\n", status)
 	level := getLogLevel(status.Status)
 
 	requestData := getRequestData(r, body)
@@ -147,7 +155,7 @@ func prepareApiLog(r *http.Request, w http.ResponseWriter, body []byte, start ti
 
 func maskSensitiveData(data string) string {
 	// Define sensitive keywords
-	sensitiveKeywords := []string{"password", "id_card", "credit_card", "ssid"}
+	sensitiveKeywords := []string{"password", "id_card", "credit_card", "ssid", "card_number", "expiry_date", "cvv", "phone", "mobile_no"}
 
 	for _, keyword := range sensitiveKeywords {
 		// Mask the sensitive data
@@ -156,18 +164,6 @@ func maskSensitiveData(data string) string {
 
 	return data
 }
-
-/*
-func convertToInt(s string) int {
-	if s == "" {
-		return http.StatusOK // Default to 200 if status not set
-	}
-	code, err := strconv.Atoi(s)
-	if err != nil {
-		return http.StatusInternalServerError // Return 500 if conversion fails
-	}
-	return code
-}*/
 
 func getLogLevel(statusCode int) string {
 	switch {
@@ -186,7 +182,7 @@ func getStatusCode(w http.ResponseWriter) commonResponse {
 	recorder := w.(*ResponseRecorder)
 	if recorder == nil {
 		return commonResponse{
-			Status:     0,
+			Status:     http.StatusInternalServerError,
 			StatusText: "",
 			Error: errorResponse{
 				Error: struct {
@@ -196,11 +192,19 @@ func getStatusCode(w http.ResponseWriter) commonResponse {
 		}
 	}
 
+	// If we have a status code from WriteHeader, use it
+	if recorder.Status != 0 {
+		return commonResponse{
+			Status:     recorder.Status,
+			StatusText: http.StatusText(recorder.Status),
+		}
+	}
+
 	// Get response body
 	respBody := recorder.Body.Bytes()
 	if len(respBody) == 0 {
 		return commonResponse{
-			Status:     0,
+			Status:     http.StatusOK, // Default to 200 if no status was set
 			StatusText: "",
 			Error: errorResponse{
 				Error: struct {
@@ -214,7 +218,7 @@ func getStatusCode(w http.ResponseWriter) commonResponse {
 	var resp commonResponse
 	if err := json.Unmarshal(respBody, &resp); err != nil {
 		return commonResponse{
-			Status:     0,
+			Status:     recorder.Status,
 			StatusText: "",
 			Error: errorResponse{
 				Error: struct {
