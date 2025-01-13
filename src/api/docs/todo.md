@@ -13,7 +13,7 @@
 - Pagination => Done
 - Compression => Done
 - Caching => Done
-- Load Balancing
+- Load Balancing => Done
 - Circuit Breaker => Done
 - Documentation
 - Key Validation
