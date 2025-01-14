@@ -21,7 +21,7 @@ theme: default
         </ul>
     </div>
     <div style="flex: 1;">
-        <img src="../images/part1/what-api.svg" alt="what-is-api" style="width: 100%; height: 450px;" />
+        <img src="./images/part1/what-api.svg" alt="what-is-api" style="width: 100%; height: 450px;" />
     </div>
 </div>
 
@@ -40,7 +40,7 @@ theme: default
         </ul>
     </div>
     <div style="flex: 1;">
-        <img src="../images/part1/keys-of-api.svg" alt="Key Objectives of APIs" style="width: 100%; height: auto;" />
+        <img src="./images/part1/keys-of-api.svg" alt="Key Objectives of APIs" style="width: 100%; height: auto;" />
     </div>
 </div>
 
@@ -112,7 +112,7 @@ timeline
         </ul>
     </div>
     <div style="flex: 1;">
-        <img src="../images/part1/api-policies-type.svg" alt="Types of APIs: Release Policies" style="width: 100%; height: auto;" />
+        <img src="./images/part1/api-policies-type.svg" alt="Types of APIs: Release Policies" style="width: 100%; height: auto;" />
     </div>
 </div>
 
@@ -188,7 +188,7 @@ timeline
         </ul>
     </div>
      <div style="text-align: right; width: 80%;">
-      <img src="../images/part1/other-types.svg" alt="Types of APIs: Web Architecture" style="width:100%; height: auto;" />
+      <img src="./images/part1/other-types.svg" alt="Types of APIs: Web Architecture" style="width:100%; height: auto;" />
    </div>
 
 </div>
@@ -219,11 +219,11 @@ The design flow outlines the steps involved in the user registration process.
 ---
 
 ## API Design Framework
-  <img src="../images/part2/framework.svg" alt="API Design Management Framework" style="width: 100%; height: 600px;" />
+  <img src="./images/part2/framework.svg" alt="API Design Management Framework" style="width: 100%; height: 600px;" />
 ---
 
 # API Security
-<img src="../images/part2/api-security.svg" alt="API Design Management Framework" style="width: 100%; height: 450px;" />
+<img src="./images/part2/api-security.svg" alt="API Design Management Framework" style="width: 100%; height: 450px;" />
 ---
 
 ## OWASP API Security Top 10
@@ -284,6 +284,7 @@ go run ./pkg/encrypt/main.go <filepath> <hexkey 64 characters>
 
 ## Code Example
 <div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+
 ```go
 package security
 
@@ -330,6 +331,7 @@ func Encrypt(inputText string, hexKey string) (string, error) {
 ## Apply Configuration Decryption
 
 <div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+
 ```go
 func NewConfig() *Config {
 	once.Do(func() {
@@ -388,7 +390,7 @@ func NewConfig() *Config {
 
 ---
 
-## 2.2Data Validation
+## 2.2 Data Validation
 
 - Validate Data Type
 ```go
@@ -447,7 +449,7 @@ exists, err := userRepo.ExistsUserByName(user.Username)
 ## 2.3 Error Handling
 
 1. HTTP Status Code Best Practices
- <img src="../images/part2/http-status-code.svg" alt="API Design Management Framework" style="width: 100%; height: 400px;" />
+ <img src="./images/part2/http-status-code.svg" alt="API Design Management Framework" style="width: 100%; height: 400px;" />
 
 
 ---
@@ -541,7 +543,7 @@ exists, err := userRepo.ExistsUserByName(user.Username)
     </div>
     <div style="flex: 1;">
         <h3>Authentication Flow</h3>
-       <img src="../images/part2/authentication-flow.svg" alt="Authentication Flow" style="width: 100%; height: 400px;" />
+       <img src="./images/part2/authentication-flow.svg" alt="Authentication Flow" style="width: 100%; height: 400px;" />
     </div>
 </div>
 
@@ -550,6 +552,7 @@ exists, err := userRepo.ExistsUserByName(user.Username)
 ### Authentication Example
 
 <div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+
 ```go
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -850,7 +853,7 @@ GRANT EXECUTE ON PROCEDURE sp_delete_user TO user;
         </ul>
     </div>
     <div style="flex: 1;">
-       <img src="../images/part2/rate-limit-diagram.svg" alt="Rate Limit Middleware" style="width: 100%; height: 400px;" />
+       <img src="./images/part2/rate-limit-diagram.svg" alt="Rate Limit Middleware" style="width: 100%; height: 400px;" />
     </div>
 </div>
 
@@ -877,7 +880,7 @@ func RateLimitMiddleware(limit rate.Limit, burst int) func(http.Handler) http.Ha
 
 ### Token Bucket Algorithm
 
-![Token Bucket Algorithm](../images/part2/token-bucket.svg)
+![Token Bucket Algorithm](./images/part2/token-bucket.svg)
 ---
 
 # Part 3: Monitoring
@@ -892,7 +895,7 @@ func RateLimitMiddleware(limit rate.Limit, burst int) func(http.Handler) http.Ha
         </ul>
     </div>
     <div style="flex: 1;">
-        <img src="../images/part3/open-telemetry.svg" alt="Open telemetry" style="width: 100%; height: 400px;" />
+        <img src="./images/part3/open-telemetry.svg" alt="Open telemetry" style="width: 100%; height: 400px;" />
     </div>
 </div>
 
@@ -920,7 +923,7 @@ func RateLimitMiddleware(limit rate.Limit, burst int) func(http.Handler) http.Ha
         </ul>
     </div>
     <div style="flex: 1;">
-        <img src="../images/part3/monitoring.svg" alt="Monitoring" style="width: 100%; height: 400px;" />
+        <img src="./images/part3/monitoring.svg" alt="Monitoring" style="width: 100%; height: 400px;" />
     </div>
 </div>
 
@@ -928,7 +931,7 @@ func RateLimitMiddleware(limit rate.Limit, burst int) func(http.Handler) http.Ha
   
 ## Log Practice
 
-<img src="../images/part3/log-practices.svg" alt="Log P" style="width: 100%; height: 400px;" />
+<img src="./images/part3/log-practices.svg" alt="Log P" style="width: 100%; height: 400px;" />
 
 ---
 layout: two-cols
@@ -973,17 +976,280 @@ layout: two-cols
 
 ---
 
+### Implement Log
+
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+
+```go
+func ApiLogMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		recorder := &ResponseRecorder{
+			ResponseWriter: w,
+			Body:           &bytes.Buffer{},
+		}
+
+		start := time.Now()
+		body, err := io.ReadAll(r.Body)
+
+		r.Body = io.NopCloser(bytes.NewBuffer(body))
+
+		w.Header().Set("Content-Type", "application/json")
+		if err != nil {
+			if err = json.Unmarshal(body, &body); err != nil {
+
+				w.WriteHeader(http.StatusBadRequest)
+
+				errResp := handler.NewErrorResponse(
+					http.StatusBadRequest,
+					"Bad Request",
+					"INVALID_REQUEST",
+					"Invalid request body",
+					GetRequestID(r),
+				)
+
+				json.NewEncoder(w).Encode(errResp)
+				return
+			}
+		}
+
+		// Call the next handler
+		next.ServeHTTP(recorder, r)
+		writeApiLog(r, recorder, body, start)
+	})
+}
+
+func writeApiLog(r *http.Request, w http.ResponseWriter, body []byte, start time.Time) {
+	logEntry, err := prepareApiLog(r, w, body, start)
+	if err != nil {
+		log.Printf("Log Error:%v", err)
+		return
+	}
+
+	fmt.Printf("Audit Log: %+v\n", logEntry)
+	apiLog := logger.GetLogInitializer()
+
+	// Start the log writing Go routine
+	go apiLog.WriteApiLogToFile(*logEntry)
+}
+
+func prepareApiLog(r *http.Request, w http.ResponseWriter, body []byte, start time.Time) (*logger.ApiLog, error) {
+
+	uaString := r.Header.Get("User-Agent")
+	token := r.Header.Get("Authorization")
+	ip := r.RemoteAddr
+
+	// Parse the User-Agent
+	ua := user_agent.New(uaString)
+	// Get the browser name and version
+	browserName, browserVersion := ua.Browser()
+	// Get the operating system name
+	osInfo := ua.OS()
+	device := ua.Model()
+	userId := getUserIdFromJWT(token)
+	status := getStatusCode(w)
+	level := getLogLevel(status.Status)
+
+	requestData := getRequestData(r, body)
+	requestData = maskSensitiveData(requestData)
+	errorMsg := getErrorFromResponse(w)
+
+	logData := &logger.ApiLog{
+		Level:                level,
+		RequestID:            GetRequestID(r),
+		Timestamp:            time.Now(),
+		Duration:             time.Since(start),
+		Method:               r.Method,
+		Path:                 r.URL.Path,
+		StatusCode:           status.Status,
+		StatusText:           status.StatusText,
+		RequestBody:          requestData,
+		ClientIP:             ip,
+		ClientBrowser:        browserName,
+		ClientBrowserVersion: browserVersion,
+		ClientOS:             osInfo,
+		ClientOSVersion:      ua.OSInfo().Version,
+		ClientDevice:         device,
+		UserID:               userId,
+		Error:                errorMsg,
+	}
+	return logData, nil
+}
+
+// internal/logger/logger.go
+func (li *Logger) WriteApiLogToFile(logEntry ApiLog) {
+	// Ensure initialization happens only once
+	li.Initialize()
+	conf := config.GetConfig()
+
+	// Determine the log file name based on the current timestamp (every 5 minutes)
+	// time := logEntry.Timestamp.Format("2025-01-12-18_39")
+	logFileName := fmt.Sprintf("%04d-%02d-%02d-%02d_%02d.log",
+		logEntry.Timestamp.Year(),
+		logEntry.Timestamp.Month(),
+		logEntry.Timestamp.Day(),
+		logEntry.Timestamp.Hour(),
+		(logEntry.Timestamp.Minute()/conf.LogMergeMin)*conf.LogMergeMin,
+	)
+	// logFileName := GetPeriodFileName(logEntry.Timestamp, conf.LogMergeMin)
+
+	fmt.Printf("logFileName: %v, conf.LogMergeMin: %v\n", logFileName, conf.LogMergeMin)
+
+	// relativePath := "../../logs"
+	logFilePath := filepath.Join(relativePath, logFileName)
+	absolutePath, err := filepath.Abs(logFilePath)
+	if err != nil {
+		log.Printf("Error obtaining absolute path: %v", err)
+		return
+	}
+
+	// Use a mutex to ensure thread safety
+	li.logMutex.Lock()
+	defer li.logMutex.Unlock()
+
+	// If the current file path changes, close the previous file and open a new one
+	if li.currentPath != absolutePath {
+		if li.currentFile != nil {
+			li.currentFile.Close()
+		}
+
+		li.currentPath = absolutePath
+
+		// Open the new file
+		li.currentFile, err = os.OpenFile(absolutePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Printf("Error opening log file: %v", err)
+		}
+	}
+
+	// Write the log entry as JSON to the file
+	jsonData, err := json.Marshal(logEntry)
+	if err != nil {
+		log.Printf("Error marshaling log data: %v", err)
+		return
+	}
+
+	_, err = li.currentFile.Write(append(jsonData, '\n')) // Add newline
+	if err != nil {
+		log.Printf("Error writing to log file: %v", err)
+		return
+	}
+}
+``` 
+</div>
+---
+
 ## Trace Middleware Practice
 
 - OpenTelemetry
 
+<div style="overflow-y: scroll; height: 200px; border: 1px solid #ccc; padding: 10px;">
+
+```go
+// cmd/server/main.go
+
+func main() {
+	shutdown, err := monitoring.InitTracer(viper.GetString("TRACE_EXPORTER_URL"))
+    }
+
+// internal/monitoring/otel.go
+package monitoring
+
+import (
+	"log"
+	"context"
+	"os"
+
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/exporters/zipkin"
+	"go.opentelemetry.io/otel/sdk/resource"
+	sdktrace "go.opentelemetry.io/otel/sdk/trace"
+	semconv "go.opentelemetry.io/otel/semconv/v1.24.0"
+)
+
+
+var logger = log.New(os.Stderr, "api", log.Ldate|log.Ltime|log.Llongfile)
+
+// initTracer creates a new trace provider instance and registers it as global trace provider.
+func InitTracer(url string) (func(context.Context) error, error) {
+	// Create Zipkin Exporter and install it as a global tracer.
+	//
+	// For demoing purposes, always sample. In a production application, you should
+	// configure the sampler to a trace.ParentBased(trace.TraceIDRatioBased) set at the desired
+	// ratio.
+	exporter, err := zipkin.New(
+		url,
+		zipkin.WithLogger(logger),
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	batcher := sdktrace.NewBatchSpanProcessor(exporter)
+
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithSpanProcessor(batcher),
+		sdktrace.WithResource(resource.NewWithAttributes(
+			semconv.SchemaURL,
+			semconv.ServiceName("api"),
+		)),
+	)
+	otel.SetTracerProvider(tp)
+
+	return tp.Shutdown, nil
+}
+
+```
+</div>
+
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+
+```go
+// internal/middleware/tracing.go
+package middleware
+
+import (
+	"net/http"
+
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/propagation"
+	"go.opentelemetry.io/otel/trace"
+)
+
+// TracingMiddleware adds OpenTelemetry tracing to requests
+func TracingMiddleware(next http.Handler) http.Handler {
+	tracer := otel.Tracer("api-server")
+	propagator := otel.GetTextMapPropagator()
+
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ctx := propagator.Extract(r.Context(), propagation.HeaderCarrier(r.Header))
+
+		ctx, span := tracer.Start(ctx, r.URL.Path,
+			trace.WithAttributes(
+				attribute.String("http.method", r.Method),
+				attribute.String("http.url", r.URL.String()),
+			),
+		)
+		defer span.End()
+
+		// Update request with traced context
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+	})
+}
+
+```
+</div>
 
 ---
 
 ## Metric Middleware Practice
 
+### Time Series Database
 - Grafana
-
+- Prometheus
+- Thanos
+- TimescaleDB
 ---
 
 # Part 4: Maintenance
@@ -1010,7 +1276,7 @@ layout: two-cols
         </ul>
     </div>
     <div style="flex: 1;">
-        <img src="../images/part4/maintenance.svg" alt="Maintenance" style="width: 100%; height: 400px;" />
+        <img src="./images/part4/maintenance.svg" alt="Maintenance" style="width: 100%; height: 400px;" />
     </div>
 </div>
 
@@ -1022,13 +1288,13 @@ layout: two-cols
 - Deprecation
 - Breaking Changes
 
- <img src="../images/part4/version-flow.svg" alt="Version Flow" style="width: 100%; height: 400px;" />
+ <img src="./images/part4/version-flow.svg" alt="Version Flow" style="width: 100%; height: 400px;" />
  
 
 ---
 
 ### Log Retention
- <img src="../images/part4/retention-flow.svg" alt="Log Retention" style="width: 100%; height: 400px;" />
+ <img src="./images/part4/retention-flow.svg" alt="Log Retention" style="width: 100%; height: 400px;" />
 
 ---
 
@@ -1057,7 +1323,7 @@ layout: two-cols
     </div>
     <div style="flex: 1;">
         <!-- Placeholder for any additional content or images -->
-         <img src="../images/part5/performance.svg" alt="Performance" style="width: 100%; height: 400px;" />
+         <img src="./images/part5/performance.svg" alt="Performance" style="width: 100%; height: 400px;" />
     </div>
 </div>
 
@@ -1065,36 +1331,36 @@ layout: two-cols
 
 ## Pagination
 
- <img src="../images/part5/pagination-comparison.svg" alt="Pagination" style="width: 100%; height: 400px;" />
+ <img src="./images/part5/pagination-comparison.svg" alt="Pagination" style="width: 100%; height: 400px;" />
 
 ---
 
 ### Response Compression
- <img src="../images/part5/compression-flow.svg" alt="Compression" style="width: 100%; height: 400px;" />
+ <img src="./images/part5/compression-flow.svg" alt="Compression" style="width: 100%; height: 400px;" />
 --- 
 
 ## Caching
 
 - One Instance
- <img src="../images/part5/local-cache-flow.svg" alt="Local Cache" style="width: 100%; height: 400px;" />
+ <img src="./images/part5/local-cache-flow.svg" alt="Local Cache" style="width: 100%; height: 400px;" />
 
 ---
 
 ## Caching (2)
 - Multiple Instance
- <img src="../images/part5/cache-flow.svg" alt="Compression" style="width: 100%; height: 400px;" />
+ <img src="./images/part5/cache-flow.svg" alt="Compression" style="width: 100%; height: 400px;" />
 ---
 
 ## Load Management
 
- <img src="../images/part5/load-management.svg" alt="Compression" style="width: 100%; height: 400px;" />
+ <img src="./images/part5/load-management.svg" alt="Compression" style="width: 100%; height: 400px;" />
 
 
 ---
 
 ## Circuit Breaker
 
- <img src="../images/part5/circuit-states.svg" alt="Circuit Breaker" style="width: 100%; height: 400px;" />
+ <img src="./images/part5/circuit-states.svg" alt="Circuit Breaker" style="width: 100%; height: 400px;" />
 ---
 
 # Part 6: Governance
@@ -1117,7 +1383,7 @@ layout: two-cols
         </ul>
     </div>
     <div style="flex: 1;">
-        <img src="../images/part6/governance.svg" alt="Governance" style="width: 100%; height: 400px;" />
+        <img src="./images/part6/governance.svg" alt="Governance" style="width: 100%; height: 400px;" />
     </div>
 </div>
 
@@ -1125,7 +1391,7 @@ layout: two-cols
 
 ## API Documentation
 
-<img src="../images/part6/api-document.svg" alt="API Docs" style="width: 100%; height: 400px;" />
+<img src="./images/part6/api-document.svg" alt="API Docs" style="width: 100%; height: 400px;" />
 
 <div style="text-align: right;">
     <br/>
@@ -1136,13 +1402,13 @@ layout: two-cols
 
 ## API Specification
 
-<img src="../images/part6/api-specification.svg" alt="API Specification" style="width: 100%; height: 400px;" />
+<img src="./images/part6/api-specification.svg" alt="API Specification" style="width: 100%; height: 400px;" />
 
 ---
 
 ## API key validation
 
-<img src="../images/part6/api-key-validation.svg" alt="API Key Validation" style="width: 100%; height: 400px;" />
+<img src="./images/part6/api-key-validation.svg" alt="API Key Validation" style="width: 100%; height: 400px;" />
 
 <div style="text-align: right;">
     <br/>
@@ -1152,22 +1418,23 @@ layout: two-cols
 
 ## Data privacy regulation
 ### GDPR
-<img src="../images/part6/gdpr.svg" alt="GDPR" style="width: 100%; height: 400px;" />
+<img src="./images/part6/gdpr.svg" alt="GDPR" style="width: 100%; height: 400px;" />
 
 --- 
 
 ### HIPAA
-<img src="../images/part6/hipaa.svg" alt="HIPAA" style="width: 100%; height: 400px;" />
+<img src="./images/part6/hipaa.svg" alt="HIPAA" style="width: 100%; height: 400px;" />
 
 ---
 
 ## Implementation Guidelines
-<img src="../images/part6/data-privacy-framework.svg" alt="Implementation Guidelines" style="width: 100%; height: 400px;" />
+<img src="./images/part6/data-privacy-framework.svg" alt="Implementation Guidelines" style="width: 100%; height: 400px;" />
 
 <div style="text-align: right;">
     <br/>
     <a href="./privacy-regulations.html">Data Privacy Regulations</a>
 </div>
+
 ---
 
 ## API Design Full Features
@@ -1256,13 +1523,15 @@ flowchart TB
 
 - Data Validation on Middleware support multiple rules and clean code
 - Implement Transform Middleware to transform request and response for masking sensitive data
-- Implement Pagination Cursor Tyeps
+- Implement Pagination Cursor Types
 - Implement Caching Middleware
 - Implement Rate Limiting Middleware by Tenant
 - Design Data Privacy Regulation Middleware
 - Design Consent verification Middleware
 - Design Audit logging Middleware
 - Generate API Documentation and API Specification
+- Discuss about API Design Management Framework
+- Discuss about API Design Governance Framework
 
 ---
 

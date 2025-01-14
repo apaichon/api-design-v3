@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>slide.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="api-design">API Design</h1>
+<h2 id="part-1-introduction">Part 1: Introduction</h2>
+<hr>
+<h1 id="what-is-an-api">What is an API?</h1>
+<div style="display: flex; align-items: center;">
+    <div style="flex: 1;">
+        <!-- Content for the left column -->
+        <ul>
+            <li>Application Programming Interface</li>
+            <li>Set of rules, protocols, and tools</li>
+            <li>Enables communication between software applications</li>
+            <li>Defines methods and data formats for information exchange</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <img src="./images/part1/what-api.svg" alt="what-is-api" style="width: 100%; height: 450px;" />
+    </div>
+</div>
+<hr>
+<h1 id="key-objectives-of-apis">Key Objectives of APIs</h1>
+<div style="display: flex; align-items: flex-start;">
+    <div style="flex: 1;">
+        <ul>
+            <li>Interoperability</li>
+            <li>Modularity</li>
+            <li>Efficiency</li>
+            <li>Security</li>
+            <li>Scalability</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <img src="./images/part1/keys-of-api.svg" alt="Key Objectives of APIs" style="width: 100%; height: auto;" />
+    </div>
+</div>
+<hr>
+<h1 id="historical-evolution">Historical Evolution</h1>
+<div class="mermaid-zoom">
+<pre><code class="language-mermaid"><div class="mermaid">timeline
+    title Historical Evolution of APIs
+    
+    section 1960s-1970s
+        Early Computing Era : OS interfaces emerge
+        Hardware Focus : Hardware abstraction focus
+        System Design : Foundation of modern APIs
+
+    section 1980s-1990s
+        GUI Revolution : GUI APIs introduced
+        Distributed Computing : CORBA development begins
+        Integration Era : Middleware becomes prominent
+        
+    section 2000s
+        Web Evolution : SOAP and Web APIs emerge
+        Architecture Shift : SOA architecture adoption
+        Modern APIs : REST architecture introduced
+        Standards : Web services standards established
+</div></code></pre>
+</div>
+<hr>
+<h1 id="modern-era-2010s-present">Modern Era (2010s-Present)</h1>
+<ul>
+<li>REST dominance</li>
+<li>GraphQL introduction</li>
+<li>GRPC</li>
+<li>tRPC</li>
+<li>API federation and composition</li>
+<li>Enhanced security models</li>
+<li>Cloud-native patterns</li>
+</ul>
+<hr>
+<h1 id="types-of-apis-release-policies">Types of APIs: Release Policies</h1>
+<div style="display: flex; align-items: flex-start;">
+    <div style="flex: 1;">
+        <ul>
+            <li><strong>Private APIs</strong>
+                <ul>
+                    <li>Internal use only</li>
+                    <li>Controlled access</li>
+                </ul>
+            </li>
+            <li><strong>Partner APIs</strong>
+                <ul>
+                    <li>Specific business partners</li>
+                    <li>Limited external access</li>
+                </ul>
+            </li>
+             <li><strong>Public APIs</strong>
+                <ul>
+                    <li>Open to all developers</li>
+                    <li>Wide accessibility</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <img src="./images/part1/api-policies-type.svg" alt="Types of APIs: Release Policies" style="width: 100%; height: auto;" />
+    </div>
+</div>
+<hr>
+<h1 id="types-of-apis-web-architecture">Types of APIs: Web Architecture</h1>
+<div style="display: flex; align-items: flex-start;">
+    <div style="flex: 1;">
+        <ul>
+            <li><strong>SOAP</strong>
+                <ul>
+                    <li>XML-based messaging</li>
+                    <li>Platform independent</li>
+                    <li>Strict standards</li>
+                </ul>
+            </li>
+            <li><strong>REST (Representational State Transfer)</strong>
+                <ul>
+                    <li>HTTP methods (GET, POST, PUT, DELETE)</li>
+                    <li>Stateless communication</li>
+                    <li>Resource-based URLs</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <ul>
+            <li><strong>GraphQL</strong>
+                <ul>
+                    <li>Query language for APIs</li>
+                    <li>Single endpoint</li>
+                    <li>Client-specified data</li>
+                </ul>
+            </li>
+            <li><strong>GRPC</strong>
+                <ul>
+                    <li>RPC-based API</li>
+                    <li>High-performance</li>
+                    <li>Language-agnostic</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<hr>
+<h1 id="other-api-types">Other API Types</h1>
+<div style="display: flex; align-items: flex-start; justify-content: space-between;">
+    <div style="flex: 1; margin-right: 10px;">
+        <ul>
+            <li><strong>Operating System APIs</strong>
+                <ul>
+                    <li>Windows API</li>
+                    <li>POSIX</li>
+                    <li>Cocoa</li>
+                </ul>
+            </li>
+            <li><strong>Database APIs</strong>
+                <ul>
+                    <li>JDBC</li>
+                    <li>ODBC</li>
+                </ul>
+            </li>
+            <li><strong>Hardware APIs</strong>
+                <ul>
+                    <li>Device drivers</li>
+                    <li>System interfaces</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+     <div style="text-align: right; width: 80%;">
+      <img src="./images/part1/other-types.svg" alt="Types of APIs: Web Architecture" style="width:100%; height: auto;" />
+   </div>
+</div>
+<hr>
+<h1 id="api-design">API Design</h1>
+<h2 id="part-2-api-design-and-development">Part 2: API Design and Development</h2>
+<hr>
+<h1 id="design-flow">Design Flow</h1>
+<h2 id="overview">Overview</h2>
+<p>The design flow outlines the steps involved in the user registration process.</p>
+<h2 id="flow-diagram">Flow Diagram</h2>
+<ul>
+<li><strong>Who</strong>: User</li>
+<li><strong>What</strong>: Register</li>
+<li><strong>Where</strong>: <code>/api/register</code></li>
+<li><strong>When</strong>: On user action</li>
+<li><strong>Why</strong>: To create a new user account</li>
+<li><strong>How</strong>:
+<ul>
+<li><strong>Method</strong>: POST</li>
+<li><strong>Response</strong>: 200 OK</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="api-design-framework">API Design Framework</h2>
+<h2 id="img-src%22imagespart2frameworksvg%22-alt%22api-design-management-framework%22-style%22width-100-height-600px%22"><img src="./images/part2/framework.svg" alt="API Design Management Framework" style="width: 100%; height: 600px;" /></h2>
+<h1 id="api-security">API Security</h1>
+<h2 id="img-src%22imagespart2api-securitysvg%22-alt%22api-design-management-framework%22-style%22width-100-height-450px%22"><img src="./images/part2/api-security.svg" alt="API Design Management Framework" style="width: 100%; height: 450px;" /></h2>
+<h2 id="owasp-api-security-top-10">OWASP API Security Top 10</h2>
+<ol>
+<li>Broken Object Level Authorization</li>
+<li>Broken Authentication</li>
+<li>Excessive Data Exposure</li>
+<li>Lack of Resources &amp; Rate Limiting</li>
+<li>Broken Function Level Authorization</li>
+<li>Mass Assignment</li>
+<li>Security Misconfiguration</li>
+<li>Injection</li>
+<li>Improper Assets Management</li>
+<li>Insufficient Logging &amp; Monitoring</li>
+</ol>
+<hr>
+<h2 id="implement-api-security">Implement API Security</h2>
+<ul>
+<li>Configuration Encryption</li>
+<li>Data Validation</li>
+<li>Error Handling</li>
+<li>Authentication</li>
+<li>Authorization</li>
+<li>Access Log</li>
+<li>Data Protection</li>
+<li>SQL Injection</li>
+<li>Rate Limiting</li>
+</ul>
+<hr>
+<h2 id="21-configuration-encryption">2.1 Configuration Encryption</h2>
+<h3 id="example-configuration">Example Configuration</h3>
+<pre class="hljs"><code><div>DB_HOST=&lt;host&gt;
+DB_PORT=&lt;port&gt;
+DB_USER=&lt;username&gt;
+DB_PASSWORD=&lt;password&gt;
+METRIC_DB=&lt;metric_database_name&gt;
+DB_NAME=&lt;database_name&gt;
+</div></code></pre>
+<h3 id="encrypted-configuration">Encrypted Configuration</h3>
+<pre class="hljs"><code><div>27YzrnlM3ovXwIP5o12wAGf9g3SLnProaOMLU1XLY7rZqoJjDyCreJqgesUhGh/ANlockqoxy2WYXpTQhKIdFArWjH62SXoXB6luywkKeQQXwuFp0Mz9F
+</div></code></pre>
+<h3 id="command-to-encrypt">Command to Encrypt</h3>
+<pre class="hljs"><code><div>go run ./pkg/encrypt/main.go &lt;filepath&gt; &lt;hexkey 64 characters&gt;
+</div></code></pre>
+<hr>
+<h2 id="code-example">Code Example</h2>
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+<pre class="hljs"><code><div><span class="hljs-keyword">package</span> security
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"crypto/aes"</span>
+	<span class="hljs-string">"crypto/cipher"</span>
+	<span class="hljs-string">"crypto/rand"</span>
+	<span class="hljs-string">"encoding/base64"</span>
+	<span class="hljs-string">"encoding/hex"</span>
+	<span class="hljs-string">"fmt"</span>
+	<span class="hljs-string">"io"</span>
+)
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">Encrypt</span><span class="hljs-params">(inputText <span class="hljs-keyword">string</span>, hexKey <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(<span class="hljs-keyword">string</span>, error)</span></span> {
+	<span class="hljs-comment">// Decode hex key back to bytes</span>
+	key, err := hex.DecodeString(hexKey)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>, fmt.Errorf(<span class="hljs-string">"error decoding key: %v"</span>, err)
+	}
+
+	block, err := aes.NewCipher(key)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>, fmt.Errorf(<span class="hljs-string">"error creating cipher: %v"</span>, err)
+	}
+
+	nonce := <span class="hljs-built_in">make</span>([]<span class="hljs-keyword">byte</span>, <span class="hljs-number">12</span>)
+	<span class="hljs-keyword">if</span> _, err := io.ReadFull(rand.Reader, nonce); err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>, fmt.Errorf(<span class="hljs-string">"error generating nonce: %v"</span>, err)
+	}
+
+	aesgcm, err := cipher.NewGCM(block)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-string">""</span>, fmt.Errorf(<span class="hljs-string">"error creating GCM: %v"</span>, err)
+	}
+
+	ciphertext := aesgcm.Seal(<span class="hljs-literal">nil</span>, nonce, []<span class="hljs-keyword">byte</span>(inputText), <span class="hljs-literal">nil</span>)
+	encoded := base64.StdEncoding.EncodeToString(<span class="hljs-built_in">append</span>(nonce, ciphertext...))
+	<span class="hljs-keyword">return</span> encoded, <span class="hljs-literal">nil</span>
+}
+</div></code></pre>
+<h2 id="div"></div></h2>
+<h2 id="apply-configuration-decryption">Apply Configuration Decryption</h2>
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">NewConfig</span><span class="hljs-params">()</span> *<span class="hljs-title">Config</span></span> {
+	once.Do(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> {
+		relativePath := <span class="hljs-string">"../../config/encrypted.env"</span>
+
+		<span class="hljs-comment">// Get the absolute path</span>
+		absolutePath, err := filepath.Abs(relativePath)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			fmt.Println(err)
+			<span class="hljs-keyword">return</span>
+		}
+
+		content, err := os.ReadFile(absolutePath)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			log.Fatalf(<span class="hljs-string">"Error reading file: %v"</span>, err)
+		}
+
+		decryptedEnv, err := security.Decrypt(<span class="hljs-keyword">string</span>(content), <span class="hljs-string">"2b2aac4013cff37435cb22ba6b0e338e2afbef15ac02abcf0a89de5d06d6ae10"</span>)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			fmt.Println(err)
+			<span class="hljs-keyword">return</span>
+		}
+
+		<span class="hljs-comment">// Load the decrypted environment variables into Viper</span>
+		viper.SetConfigType(<span class="hljs-string">"env"</span>)
+		err = viper.ReadConfig(bytes.NewBufferString(decryptedEnv))
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			fmt.Println(<span class="hljs-string">"Failed to load env variables:"</span>, err)
+			<span class="hljs-keyword">return</span>
+		}
+
+		viper.AutomaticEnv()
+
+		<span class="hljs-comment">// Create a Config instance and set values from Viper</span>
+		instance = &amp;Config{
+			DBHost:          viper.GetString(DBHost),
+			DBPort:          viper.GetInt(DBPort),
+			DBUser:          viper.GetString(DBUser),
+			DBPassword:      viper.GetString(DBPassword),
+			DBName:          viper.GetString(DBName),
+			SecretKey:       viper.GetString(SecretKey),
+			TokenAge:        viper.GetInt(TokenAge),
+			GraphQLPort:     viper.GetInt(GraphQLPort),
+			LogServerPort:   viper.GetInt(LogServerPort),
+			LogMergeMin:     viper.GetInt(LogMergeMin),
+			LogMoveMin:      viper.GetFloat64(LogMoveMin),
+			RateLimitReqSec: viper.GetInt(RateLimitReqSec),
+			RateLimitBurst:  viper.GetInt(RateLimitBurst),
+		}
+	})
+	<span class="hljs-keyword">return</span> instance
+
+</div></code></pre>
+</div>
+<hr>
+<h2 id="22-data-validation">2.2 Data Validation</h2>
+<ul>
+<li>Validate Data Type</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">var</span> user User
+err := json.NewDecoder(r.Body).Decode(&amp;user)
+<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+	http.Error(w, err.Error(), http.StatusBadRequest)
+	<span class="hljs-keyword">return</span>
+}
+</div></code></pre>
+<ul>
+<li>Validate Data Length</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-comment">// Validate required fields</span>
+	<span class="hljs-keyword">if</span> user.Username == <span class="hljs-string">""</span> || user.Password == <span class="hljs-string">""</span> {
+		http.Error(w, <span class="hljs-string">"Username and password are required"</span>, http.StatusBadRequest)
+		<span class="hljs-keyword">return</span>
+	}
+</div></code></pre>
+<ul>
+<li>Validate Data Range</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">if</span> user.Age &lt; <span class="hljs-number">18</span> || user.Age &gt; <span class="hljs-number">100</span> {
+	http.Error(w, <span class="hljs-string">"Age must be between 18 and 100"</span>, http.StatusBadRequest)
+	<span class="hljs-keyword">return</span>
+}
+</div></code></pre>
+<hr>
+<h2 id="data-validation-2">Data Validation (2)</h2>
+<ul>
+<li>Validate Data Format</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">if</span> !regexp.MustCompile(<span class="hljs-string">`^[a-zA-Z0-9]+$`</span>).MatchString(user.Password) {
+	http.Error(w, <span class="hljs-string">"Password must contain only letters and numbers"</span>, http.StatusBadRequest)
+	<span class="hljs-keyword">return</span>
+}
+</div></code></pre>
+<ul>
+<li>Validate Data Constraint</li>
+</ul>
+<pre class="hljs"><code><div>exists, err := userRepo.ExistsUserByName(user.Username)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		http.Error(w, err.Error(), http.StatusConflict)
+		<span class="hljs-keyword">return</span>
+	}
+
+	<span class="hljs-keyword">if</span> exists {
+		http.Error(w, <span class="hljs-string">"Username already exists"</span>, http.StatusConflict)
+		<span class="hljs-keyword">return</span>
+	}
+</div></code></pre>
+<hr>
+<h2 id="23-error-handling">2.3 Error Handling</h2>
+<ol>
+<li>HTTP Status Code Best Practices
+<img src="./images/part2/http-status-code.svg" alt="API Design Management Framework" style="width: 100%; height: 400px;" /></li>
+</ol>
+<hr>
+<h2 id="success-status-2xx">Success Status (2xx)</h2>
+<ul>
+<li><strong>200</strong>: OK - Standard success response</li>
+<li><strong>201</strong>: Created - Resource successfully created</li>
+<li><strong>204</strong>: No Content - Successful operation, no content returned</li>
+</ul>
+<hr>
+<h2 id="client-error-status-4xx">Client Error Status (4xx)</h2>
+<ul>
+<li><strong>400</strong>: Bad Request - Invalid parameters/format</li>
+<li><strong>401</strong>: Unauthorized - Authentication failed</li>
+<li><strong>403</strong>: Forbidden - Insufficient permissions</li>
+<li><strong>404</strong>: Not Found - Resource doesn't exist</li>
+<li><strong>429</strong>: Too Many Requests - Rate limit exceeded</li>
+</ul>
+<hr>
+<h2 id="server-error-status-5xx">Server Error Status (5xx)</h2>
+<ul>
+<li><strong>500</strong>: Internal Server Error - Unexpected server errors</li>
+<li><strong>502</strong>: Bad Gateway - Invalid response from upstream server</li>
+<li><strong>503</strong>: Service Unavailable - Server temporarily down</li>
+<li><strong>504</strong>: Gateway Timeout - Server timeout</li>
+</ul>
+<hr>
+<h1 id="error-response-structure">Error Response Structure</h1>
+<h2 id="basic-template">Basic Template:</h2>
+<pre class="hljs"><code><div>{
+    <span class="hljs-attr">"status"</span>: <span class="hljs-number">400</span>,
+    <span class="hljs-attr">"status_text"</span>: <span class="hljs-string">"Bad Request"</span>,
+    <span class="hljs-attr">"error"</span>: {
+        <span class="hljs-attr">"code"</span>: <span class="hljs-string">"ERROR_CODE"</span>,
+        <span class="hljs-attr">"message"</span>: <span class="hljs-string">"User-friendly message"</span>,
+        <span class="hljs-attr">"details"</span>: {
+            <span class="hljs-attr">"field"</span>: <span class="hljs-string">"specific_field"</span>,
+            <span class="hljs-attr">"reason"</span>: <span class="hljs-string">"detailed explanation"</span>
+        },
+        <span class="hljs-attr">"request_id"</span>: <span class="hljs-string">"unique_request_identifier"</span>,
+        <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"2024-01-06T12:00:00Z"</span>
+    }
+}
+</div></code></pre>
+<hr>
+<h1 id="error-handling-best-practices">Error Handling Best Practices</h1>
+<h2 id="consistency">Consistency:</h2>
+<ul>
+<li>Use consistent error formats across all endpoints</li>
+<li>Maintain uniform error codes and messages</li>
+<li>Follow predictable status code usage</li>
+</ul>
+<h2 id="security">Security:</h2>
+<ul>
+<li>Never expose sensitive information in errors</li>
+<li>Use generic messages for security-related errors</li>
+<li>Log detailed errors server-side only</li>
+</ul>
+<hr>
+<h2 id="documentation">Documentation:</h2>
+<ul>
+<li>Document all possible error codes</li>
+<li>Provide clear error messages</li>
+<li>Include remediation steps when applicable</li>
+</ul>
+<hr>
+<h2 id="24-authentication">2.4 Authentication</h2>
+<h3 id="authentication-method">Authentication Method</h3>
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; margin-right: 10px;">
+        <ul>
+            <li><strong>Basic Authentication</strong></li>
+            <li><strong>OAuth 2.0</strong></li>
+            <li><strong>JWT</strong></li>
+            <li><strong>API Key</strong></li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <h3>Authentication Flow</h3>
+       <img src="./images/part2/authentication-flow.svg" alt="Authentication Flow" style="width: 100%; height: 400px;" />
+    </div>
+</div>
+<hr>
+<h3 id="authentication-example">Authentication Example</h3>
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">LoginHandler</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> {
+
+	cors(w, r)
+	<span class="hljs-keyword">var</span> user User
+	err := json.NewDecoder(r.Body).Decode(&amp;user)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		resp := handler.NewErrorResponse(
+			http.StatusBadRequest,
+			<span class="hljs-string">"Bad Request"</span>,
+			<span class="hljs-string">"INVALID_REQUEST"</span>,
+			err.Error(),
+			r.Header.Get(<span class="hljs-string">"X-Request-ID"</span>),
+		)
+		w.Header().Set(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"application/json"</span>)
+		json.NewEncoder(w).Encode(resp)
+		<span class="hljs-keyword">return</span>
+	}
+
+	userRepo := NewUserRepo()
+	config := config.NewConfig()
+
+	userdb, ok := userRepo.GetUserByName(user.Username) <span class="hljs-comment">// users[user.Username]</span>
+	<span class="hljs-keyword">if</span> ok != <span class="hljs-literal">nil</span> {
+		resp := handler.NewErrorResponse(
+			http.StatusUnauthorized,
+			<span class="hljs-string">"Unauthorized"</span>,
+			<span class="hljs-string">"INVALID_USERNAME"</span>,
+			<span class="hljs-string">"Invalid username"</span>,
+			r.Header.Get(<span class="hljs-string">"X-Request-ID"</span>),
+		)
+		w.Header().Set(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"application/json"</span>)
+		json.NewEncoder(w).Encode(resp)
+		<span class="hljs-keyword">return</span>
+	}
+	<span class="hljs-comment">// fmt.Println("User")</span>
+	hash := HashString(user.Username + user.Password + userdb.Salt)
+	<span class="hljs-comment">// fmt.Println("UserDbPassword:", userdb.Password, "Hash:",hash, "UserNameDb:", userdb.Username, "username", user.Username )</span>
+	<span class="hljs-keyword">if</span> userdb.Password != hash {
+		resp := handler.NewErrorResponse(
+			http.StatusUnauthorized,
+			<span class="hljs-string">"Unauthorized"</span>,
+			<span class="hljs-string">"INVALID_CREDENTIALS"</span>,
+			<span class="hljs-string">"Invalid username or password"</span>,
+			r.Header.Get(<span class="hljs-string">"X-Request-ID"</span>),
+		)
+		w.Header().Set(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"application/json"</span>)
+		json.NewEncoder(w).Encode(resp)
+		<span class="hljs-keyword">return</span>
+	}
+
+	<span class="hljs-comment">// fmt.Println("Duration", time.Duration(config.TokenAge))</span>
+	expirationTime := time.Now().Add(time.Duration(config.TokenAge) * time.Minute)
+
+	claims := &amp;JwtClaims{
+		UserId:   userdb.UserId,
+		Username: userdb.Username,
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	tokenString, err := token.SignedString([]<span class="hljs-keyword">byte</span>(config.SecretKey))
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		resp := handler.NewErrorResponse(
+			http.StatusInternalServerError,
+			<span class="hljs-string">"Internal Server Error"</span>,
+			<span class="hljs-string">"TOKEN_GENERATION_FAILED"</span>,
+			err.Error(),
+			r.Header.Get(<span class="hljs-string">"X-Request-ID"</span>),
+		)
+		w.Header().Set(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"application/json"</span>)
+		json.NewEncoder(w).Encode(resp)
+		<span class="hljs-keyword">return</span>
+	}
+
+	http.SetCookie(w, &amp;http.Cookie{
+		Name:    <span class="hljs-string">"token"</span>,
+		Value:   tokenString,
+		Expires: expirationTime,
+	})
+
+	<span class="hljs-comment">// Updated response format</span>
+	responseData := JwtToken{
+		Token:     tokenString,
+		ExpiredAt: expirationTime.Unix(),
+	}
+	resp := handler.NewResponse(http.StatusOK, <span class="hljs-string">"Success"</span>, responseData, r.Header.Get(<span class="hljs-string">"X-Request-ID"</span>))
+	w.Header().Set(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"application/json"</span>)
+	json.NewEncoder(w).Encode(resp)
+}
+
+</div></code></pre>
+</div>
+<hr>
+<h3 id="jwt-middleware">JWT Middleware</h3>
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">JWTMiddleware</span><span class="hljs-params">(excludedRoutes []<span class="hljs-keyword">string</span>)</span> <span class="hljs-title">func</span><span class="hljs-params">(http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> {
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> {
+		<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> {
+			<span class="hljs-comment">// Check if the request path is in the excluded routes</span>
+			<span class="hljs-keyword">for</span> _, route := <span class="hljs-keyword">range</span> excludedRoutes {
+				<span class="hljs-keyword">if</span> strings.HasPrefix(r.URL.Path, route) {
+					next.ServeHTTP(w, r) <span class="hljs-comment">// Skip JWT validation</span>
+					<span class="hljs-keyword">return</span>
+				}
+			}
+
+			<span class="hljs-comment">// Validate the JWT token</span>
+			tokenString := getTokenFromRequest(r)
+			<span class="hljs-keyword">if</span> tokenString == <span class="hljs-string">""</span> {
+				http.Error(w, <span class="hljs-string">"Unauthorized"</span>, http.StatusUnauthorized)
+				<span class="hljs-keyword">return</span>
+			}
+
+			token, err := validateToken(tokenString)
+			<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> || !token.Valid {
+				http.Error(w, <span class="hljs-string">"Unauthorized"</span>, http.StatusUnauthorized)
+				<span class="hljs-keyword">return</span>
+			}
+
+			<span class="hljs-comment">// If valid, pass the request to the next handler</span>
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+</div></code></pre>
+</div>
+<hr>
+<h2 id="25-authorization">2.5 Authorization</h2>
+<pre><code class="language-mermaid"><div class="mermaid">erDiagram
+    USERS {
+        TEXT user_id PK "Primary Key"
+        TEXT username "Username"
+        TEXT password "Password"
+        DATETIME created_at "Created At"
+        TEXT created_by "Created By"
+        DATETIME updated_at "Updated At"
+        TEXT updated_by "Updated By"
+        INTEGER status_id "Status ID"
+    }
+
+    ROLES {
+        INTEGER role_id PK "Primary Key"
+        TEXT role_name "Role Name"
+        TEXT role_desc "Role Description"
+        BOOLEAN is_super_admin "Is Super Admin"
+        DATETIME created_at "Created At"
+        TEXT created_by "Created By"
+        DATETIME updated_at "Updated At"
+        TEXT updated_by "Updated By"
+        INTEGER status_id "Status ID"
+    }
+
+    USER_ROLES {
+        INTEGER user_role_id PK "Primary Key"
+        INTEGER role_id FK "Foreign Key to Roles"
+        TEXT user_id FK "Foreign Key to Users"
+        DATETIME created_at "Created At"
+        TEXT created_by "Created By"
+        DATETIME updated_at "Updated At"
+        TEXT updated_by "Updated By"
+        INTEGER status_id "Status ID"
+    }
+
+    ROLE_PERMISSIONS {
+        INTEGER role_permission_id PK "Primary Key"
+        TEXT role_permission_desc "Role Permission Description"
+        INTEGER resource_type_id "Resource Type ID"
+        TEXT resource_name "Resource Name"
+        BOOLEAN can_execute "Can Execute"
+        BOOLEAN can_read "Can Read"
+        BOOLEAN can_write "Can Write"
+        BOOLEAN can_delete "Can Delete"
+        DATETIME created_at "Created At"
+        TEXT created_by "Created By"
+        DATETIME updated_at "Updated At"
+        TEXT updated_by "Updated By"
+        INTEGER status_id "Status ID"
+    }
+
+    USERS ||--o{ USER_ROLES : "has"
+    ROLES ||--o{ USER_ROLES : "has"
+    ROLES ||--o{ ROLE_PERMISSIONS : "has"
+</div></code></pre>
+<hr>
+<h2 id="26-access-logs">2.6 Access Logs</h2>
+<pre><code class="language-mermaid"><div class="mermaid">erDiagram
+    ACCESS_LOGS {
+        INTEGER log_id PK "Primary Key"
+        TEXT user_id FK "Foreign Key to Users"
+        TEXT resource_name "Resource Name"
+        TEXT action "Action"
+        DATETIME timestamp "Timestamp"
+        TEXT ip_address "IP Address"
+        TEXT user_agent "User Agent"
+        INTEGER status_code "Status Code"
+        TEXT response "Response"
+    }
+</div></code></pre>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"log_id"</span>: <span class="hljs-number">1</span>,
+  <span class="hljs-attr">"user_id"</span>: <span class="hljs-string">"user123"</span>,
+  <span class="hljs-attr">"resource_name"</span>: <span class="hljs-string">"Login"</span>,
+  <span class="hljs-attr">"action"</span>: <span class="hljs-string">"login"</span>,
+  <span class="hljs-attr">"timestamp"</span>: <span class="hljs-string">"2023-10-01T12:00:00Z"</span>,
+  <span class="hljs-attr">"ip_address"</span>: <span class="hljs-string">"192.168.1.1"</span>,
+  <span class="hljs-attr">"user_agent"</span>: <span class="hljs-string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"</span>,
+  <span class="hljs-attr">"status_code"</span>: <span class="hljs-number">200</span>,
+  <span class="hljs-attr">"response"</span>: <span class="hljs-string">"Login successful"</span>
+}
+</div></code></pre>
+<hr>
+<h2 id="27-data-protection">2.7 Data Protection</h2>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Original</th>
+<th>Masked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ID Card Number</td>
+<td>1234-5678-9012</td>
+<td><strong><strong>-</strong></strong>-9012</td>
+</tr>
+<tr>
+<td>Credit Card Number</td>
+<td>1234 5678 9012 3456</td>
+<td>**** **** **** 3456</td>
+</tr>
+<tr>
+<td>Mobile Number</td>
+<td>+1-234-567-8901</td>
+<td>+1-<em><strong>-</strong></em>-8901</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>SQL Masking</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">create</span> <span class="hljs-keyword">function</span> mask_phone(phone <span class="hljs-built_in">varchar</span>(<span class="hljs-number">20</span>)) <span class="hljs-keyword">returns</span> <span class="hljs-built_in">varchar</span>(<span class="hljs-number">20</span>)
+<span class="hljs-keyword">begin</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">replace</span>(phone, <span class="hljs-keyword">substring</span>(phone, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>), <span class="hljs-string">'****'</span>);
+<span class="hljs-keyword">end</span>;
+</div></code></pre>
+<ul>
+<li>Backend Masking</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">mask_phone</span><span class="hljs-params">(phone <span class="hljs-keyword">string</span>)</span> <span class="hljs-title">string</span></span> {
+    <span class="hljs-keyword">return</span> strings.Replace(phone, phone[<span class="hljs-number">4</span>:<span class="hljs-number">8</span>], <span class="hljs-string">"****"</span>, <span class="hljs-number">1</span>)
+}
+</div></code></pre>
+<hr>
+<h2 id="28-sql-injection">2.8 SQL Injection</h2>
+<h3 id="sql-injection-example">SQL Injection Example</h3>
+<pre class="hljs"><code><div><span class="hljs-attribute">GET http://host/api/products?textsearch=shoe;DELETE FROM users WHERE id = 1;
+</span></div></code></pre>
+<h3 id="sql-injection-prevention">SQL Injection Prevention</h3>
+<ul>
+<li>Execute single statements</li>
+</ul>
+<pre class="hljs"><code><div>db.Query(sql)
+</div></code></pre>
+<ul>
+<li>Database permissions protect delete and drop objects</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">DELETE</span>, <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">ON</span> <span class="hljs-keyword">users</span> <span class="hljs-keyword">TO</span> <span class="hljs-keyword">user</span>;
+</div></code></pre>
+<ul>
+<li>Execute permissions protect execute stored procedures</li>
+</ul>
+<pre class="hljs"><code><div><span class="hljs-keyword">GRANT</span> <span class="hljs-keyword">EXECUTE</span> <span class="hljs-keyword">ON</span> <span class="hljs-keyword">PROCEDURE</span> sp_delete_user <span class="hljs-keyword">TO</span> <span class="hljs-keyword">user</span>;
+</div></code></pre>
+<hr>
+<h2 id="29-rate-limiting">2.9 Rate Limiting</h2>
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; margin-right: 10px;">
+        <ul>
+            <li><strong>Security Benefits</strong></li>
+            <li>DDoS Protection</li>
+            <li>Mitigates automated attacks</li>
+            <li>Blocks brute force attempts</li>
+            <li>Prevents credential stuffing</li>
+            <li>Limits impact of bot traffic</li>
+            <li><strong>API Abuse Prevention</strong></li>
+            <li>Stops data scraping</li>
+            <li>Prevents unauthorized bulk operations</li>
+            <li>Protects sensitive endpoints</li>
+            <li>Identifies suspicious patterns</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+       <img src="./images/part2/rate-limit-diagram.svg" alt="Rate Limit Middleware" style="width: 100%; height: 400px;" />
+    </div>
+</div>
+<hr>
+<h3 id="rate-limit-middleware">Rate Limit Middleware</h3>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">RateLimitMiddleware</span><span class="hljs-params">(limit rate.Limit, burst <span class="hljs-keyword">int</span>)</span> <span class="hljs-title">func</span><span class="hljs-params">(http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> {
+	limiter := rate.NewLimiter(limit, burst)
+
+	<span class="hljs-keyword">return</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> {
+		<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> {
+			<span class="hljs-keyword">if</span> !limiter.Allow() {
+				http.Error(w, <span class="hljs-string">"Rate limit exceeded"</span>, http.StatusTooManyRequests)
+				<span class="hljs-keyword">return</span>
+			}
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+</div></code></pre>
+<hr>
+<h3 id="token-bucket-algorithm">Token Bucket Algorithm</h3>
+<h2 id="token-bucket-algorithm"><img src="./images/part2/token-bucket.svg" alt="Token Bucket Algorithm"></h2>
+<h1 id="part-3-monitoring">Part 3: Monitoring</h1>
+<div style="display: flex; align-items: flex-start;">
+    <div style="flex: 1;">
+        <ul>
+            OpenTelemetry is a set of tools, APIs, and SDKs that provides observability through distributed tracing, metrics, and logging.
+            <li>tracing - What happens when a request is made to an application.</li>
+            <li>metric - A measurement captured at runtime.</li>
+            <li>logs - A log is a timestamped text record, either structured (recommended) or unstructured, with metadata.</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <img src="./images/part3/open-telemetry.svg" alt="Open telemetry" style="width: 100%; height: 400px;" />
+    </div>
+</div>
+<hr>
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; margin-right: 10px;">
+        <h3>Health and Performance Tracking</h3>
+        <ul>
+            <li>Real-time performance metrics and dashboards</li>
+            <li>Error rate and response time monitoring</li>
+            <li>Resource utilization tracking</li>
+            <li>SLA compliance monitoring and reporting</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <h3>Analytics and Insights</h3>
+        <ul>
+            <li>Usage patterns and trends analysis</li>
+            <li>Client behavior and adoption metrics</li>
+            <li>Error pattern identification and tracking</li>
+            <li>API call volume and traffic analysis</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <img src="./images/part3/monitoring.svg" alt="Monitoring" style="width: 100%; height: 400px;" />
+    </div>
+</div>
+<hr>
+<h2 id="log-practice">Log Practice</h2>
+<img src="./images/part3/log-practices.svg" alt="Log P" style="width: 100%; height: 400px;" />
+<hr>
+<h2 id="layout-two-cols">layout: two-cols</h2>
+<h2 id="api-log-middleware-practice">API Log Middleware Practice</h2>
+<h4 id="logresponsewriter">LogResponseWriter</h4>
+<ul>
+<li>Custom wrapper around <code>http.ResponseWriter</code></li>
+<li>Captures status code and response length</li>
+<li>Allows tracking of response metrics</li>
+</ul>
+<h3 id="apilogmiddleware">APILogMiddleware</h3>
+<ul>
+<li>Basic logging middleware that captures:
+<ul>
+<li>Request ID</li>
+<li>Log Level</li>
+<li>User ID</li>
+<li>Request method and path</li>
+<li>Client IP address</li>
+<li>Response status code</li>
+<li>Request duration</li>
+<li>Response size</li>
+<li>User agent</li>
+<li>Request Payload</li>
+</ul>
+</li>
+</ul>
+<p>::right::</p>
+<br/>
+<br/>
+<h3 id="withrequestid">WithRequestID</h3>
+<ul>
+<li>Adds request tracking capability</li>
+<li>Generates or propagates request IDs</li>
+<li>Useful for tracing requests across services</li>
+</ul>
+<h3 id="configurable-logger-apilogconfig">Configurable Logger (APILogConfig)</h3>
+<ul>
+<li>Allows customization of logging behavior</li>
+<li>Can log headers, cookies, and body</li>
+<li>Supports redaction of sensitive information</li>
+<li>Configurable through options</li>
+</ul>
+<hr>
+<h3 id="implement-log">Implement Log</h3>
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">ApiLogMiddleware</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> {
+	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> {
+		recorder := &amp;ResponseRecorder{
+			ResponseWriter: w,
+			Body:           &amp;bytes.Buffer{},
+		}
+
+		start := time.Now()
+		body, err := io.ReadAll(r.Body)
+
+		r.Body = io.NopCloser(bytes.NewBuffer(body))
+
+		w.Header().Set(<span class="hljs-string">"Content-Type"</span>, <span class="hljs-string">"application/json"</span>)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			<span class="hljs-keyword">if</span> err = json.Unmarshal(body, &amp;body); err != <span class="hljs-literal">nil</span> {
+
+				w.WriteHeader(http.StatusBadRequest)
+
+				errResp := handler.NewErrorResponse(
+					http.StatusBadRequest,
+					<span class="hljs-string">"Bad Request"</span>,
+					<span class="hljs-string">"INVALID_REQUEST"</span>,
+					<span class="hljs-string">"Invalid request body"</span>,
+					GetRequestID(r),
+				)
+
+				json.NewEncoder(w).Encode(errResp)
+				<span class="hljs-keyword">return</span>
+			}
+		}
+
+		<span class="hljs-comment">// Call the next handler</span>
+		next.ServeHTTP(recorder, r)
+		writeApiLog(r, recorder, body, start)
+	})
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">writeApiLog</span><span class="hljs-params">(r *http.Request, w http.ResponseWriter, body []<span class="hljs-keyword">byte</span>, start time.Time)</span></span> {
+	logEntry, err := prepareApiLog(r, w, body, start)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Printf(<span class="hljs-string">"Log Error:%v"</span>, err)
+		<span class="hljs-keyword">return</span>
+	}
+
+	fmt.Printf(<span class="hljs-string">"Audit Log: %+v\n"</span>, logEntry)
+	apiLog := logger.GetLogInitializer()
+
+	<span class="hljs-comment">// Start the log writing Go routine</span>
+	<span class="hljs-keyword">go</span> apiLog.WriteApiLogToFile(*logEntry)
+}
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">prepareApiLog</span><span class="hljs-params">(r *http.Request, w http.ResponseWriter, body []<span class="hljs-keyword">byte</span>, start time.Time)</span> <span class="hljs-params">(*logger.ApiLog, error)</span></span> {
+
+	uaString := r.Header.Get(<span class="hljs-string">"User-Agent"</span>)
+	token := r.Header.Get(<span class="hljs-string">"Authorization"</span>)
+	ip := r.RemoteAddr
+
+	<span class="hljs-comment">// Parse the User-Agent</span>
+	ua := user_agent.New(uaString)
+	<span class="hljs-comment">// Get the browser name and version</span>
+	browserName, browserVersion := ua.Browser()
+	<span class="hljs-comment">// Get the operating system name</span>
+	osInfo := ua.OS()
+	device := ua.Model()
+	userId := getUserIdFromJWT(token)
+	status := getStatusCode(w)
+	level := getLogLevel(status.Status)
+
+	requestData := getRequestData(r, body)
+	requestData = maskSensitiveData(requestData)
+	errorMsg := getErrorFromResponse(w)
+
+	logData := &amp;logger.ApiLog{
+		Level:                level,
+		RequestID:            GetRequestID(r),
+		Timestamp:            time.Now(),
+		Duration:             time.Since(start),
+		Method:               r.Method,
+		Path:                 r.URL.Path,
+		StatusCode:           status.Status,
+		StatusText:           status.StatusText,
+		RequestBody:          requestData,
+		ClientIP:             ip,
+		ClientBrowser:        browserName,
+		ClientBrowserVersion: browserVersion,
+		ClientOS:             osInfo,
+		ClientOSVersion:      ua.OSInfo().Version,
+		ClientDevice:         device,
+		UserID:               userId,
+		Error:                errorMsg,
+	}
+	<span class="hljs-keyword">return</span> logData, <span class="hljs-literal">nil</span>
+}
+
+<span class="hljs-comment">// internal/logger/logger.go</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-params">(li *Logger)</span> <span class="hljs-title">WriteApiLogToFile</span><span class="hljs-params">(logEntry ApiLog)</span></span> {
+	<span class="hljs-comment">// Ensure initialization happens only once</span>
+	li.Initialize()
+	conf := config.GetConfig()
+
+	<span class="hljs-comment">// Determine the log file name based on the current timestamp (every 5 minutes)</span>
+	<span class="hljs-comment">// time := logEntry.Timestamp.Format("2025-01-12-18_39")</span>
+	logFileName := fmt.Sprintf(<span class="hljs-string">"%04d-%02d-%02d-%02d_%02d.log"</span>,
+		logEntry.Timestamp.Year(),
+		logEntry.Timestamp.Month(),
+		logEntry.Timestamp.Day(),
+		logEntry.Timestamp.Hour(),
+		(logEntry.Timestamp.Minute()/conf.LogMergeMin)*conf.LogMergeMin,
+	)
+	<span class="hljs-comment">// logFileName := GetPeriodFileName(logEntry.Timestamp, conf.LogMergeMin)</span>
+
+	fmt.Printf(<span class="hljs-string">"logFileName: %v, conf.LogMergeMin: %v\n"</span>, logFileName, conf.LogMergeMin)
+
+	<span class="hljs-comment">// relativePath := "../../logs"</span>
+	logFilePath := filepath.Join(relativePath, logFileName)
+	absolutePath, err := filepath.Abs(logFilePath)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Printf(<span class="hljs-string">"Error obtaining absolute path: %v"</span>, err)
+		<span class="hljs-keyword">return</span>
+	}
+
+	<span class="hljs-comment">// Use a mutex to ensure thread safety</span>
+	li.logMutex.Lock()
+	<span class="hljs-keyword">defer</span> li.logMutex.Unlock()
+
+	<span class="hljs-comment">// If the current file path changes, close the previous file and open a new one</span>
+	<span class="hljs-keyword">if</span> li.currentPath != absolutePath {
+		<span class="hljs-keyword">if</span> li.currentFile != <span class="hljs-literal">nil</span> {
+			li.currentFile.Close()
+		}
+
+		li.currentPath = absolutePath
+
+		<span class="hljs-comment">// Open the new file</span>
+		li.currentFile, err = os.OpenFile(absolutePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, <span class="hljs-number">0644</span>)
+		<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+			log.Printf(<span class="hljs-string">"Error opening log file: %v"</span>, err)
+		}
+	}
+
+	<span class="hljs-comment">// Write the log entry as JSON to the file</span>
+	jsonData, err := json.Marshal(logEntry)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Printf(<span class="hljs-string">"Error marshaling log data: %v"</span>, err)
+		<span class="hljs-keyword">return</span>
+	}
+
+	_, err = li.currentFile.Write(<span class="hljs-built_in">append</span>(jsonData, <span class="hljs-string">'\n'</span>)) <span class="hljs-comment">// Add newline</span>
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		log.Printf(<span class="hljs-string">"Error writing to log file: %v"</span>, err)
+		<span class="hljs-keyword">return</span>
+	}
+}
+</div></code></pre>
+<h2 id="div"></div></h2>
+<h2 id="trace-middleware-practice">Trace Middleware Practice</h2>
+<ul>
+<li>OpenTelemetry</li>
+</ul>
+<div style="overflow-y: scroll; height: 200px; border: 1px solid #ccc; padding: 10px;">
+<pre class="hljs"><code><div><span class="hljs-comment">// cmd/server/main.go</span>
+
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> {
+	shutdown, err := monitoring.InitTracer(viper.GetString(<span class="hljs-string">"TRACE_EXPORTER_URL"</span>))
+    }
+
+<span class="hljs-comment">// internal/monitoring/otel.go</span>
+<span class="hljs-keyword">package</span> monitoring
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"log"</span>
+	<span class="hljs-string">"context"</span>
+	<span class="hljs-string">"os"</span>
+
+	<span class="hljs-string">"go.opentelemetry.io/otel"</span>
+	<span class="hljs-string">"go.opentelemetry.io/otel/exporters/zipkin"</span>
+	<span class="hljs-string">"go.opentelemetry.io/otel/sdk/resource"</span>
+	sdktrace <span class="hljs-string">"go.opentelemetry.io/otel/sdk/trace"</span>
+	semconv <span class="hljs-string">"go.opentelemetry.io/otel/semconv/v1.24.0"</span>
+)
+
+
+<span class="hljs-keyword">var</span> logger = log.New(os.Stderr, <span class="hljs-string">"api"</span>, log.Ldate|log.Ltime|log.Llongfile)
+
+<span class="hljs-comment">// initTracer creates a new trace provider instance and registers it as global trace provider.</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">InitTracer</span><span class="hljs-params">(url <span class="hljs-keyword">string</span>)</span> <span class="hljs-params">(<span class="hljs-keyword">func</span>(context.Context)</span> <span class="hljs-title">error</span>, <span class="hljs-title">error</span>)</span> {
+	<span class="hljs-comment">// Create Zipkin Exporter and install it as a global tracer.</span>
+	<span class="hljs-comment">//</span>
+	<span class="hljs-comment">// For demoing purposes, always sample. In a production application, you should</span>
+	<span class="hljs-comment">// configure the sampler to a trace.ParentBased(trace.TraceIDRatioBased) set at the desired</span>
+	<span class="hljs-comment">// ratio.</span>
+	exporter, err := zipkin.New(
+		url,
+		zipkin.WithLogger(logger),
+	)
+	<span class="hljs-keyword">if</span> err != <span class="hljs-literal">nil</span> {
+		<span class="hljs-keyword">return</span> <span class="hljs-literal">nil</span>, err
+	}
+
+	batcher := sdktrace.NewBatchSpanProcessor(exporter)
+
+	tp := sdktrace.NewTracerProvider(
+		sdktrace.WithSpanProcessor(batcher),
+		sdktrace.WithResource(resource.NewWithAttributes(
+			semconv.SchemaURL,
+			semconv.ServiceName(<span class="hljs-string">"api"</span>),
+		)),
+	)
+	otel.SetTracerProvider(tp)
+
+	<span class="hljs-keyword">return</span> tp.Shutdown, <span class="hljs-literal">nil</span>
+}
+
+</div></code></pre>
+</div>
+<div style="overflow-y: scroll; height: 400px; border: 1px solid #ccc; padding: 10px;">
+<pre class="hljs"><code><div><span class="hljs-comment">// internal/middleware/tracing.go</span>
+<span class="hljs-keyword">package</span> middleware
+
+<span class="hljs-keyword">import</span> (
+	<span class="hljs-string">"net/http"</span>
+
+	<span class="hljs-string">"go.opentelemetry.io/otel"</span>
+	<span class="hljs-string">"go.opentelemetry.io/otel/attribute"</span>
+	<span class="hljs-string">"go.opentelemetry.io/otel/propagation"</span>
+	<span class="hljs-string">"go.opentelemetry.io/otel/trace"</span>
+)
+
+<span class="hljs-comment">// TracingMiddleware adds OpenTelemetry tracing to requests</span>
+<span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">TracingMiddleware</span><span class="hljs-params">(next http.Handler)</span> <span class="hljs-title">http</span>.<span class="hljs-title">Handler</span></span> {
+	tracer := otel.Tracer(<span class="hljs-string">"api-server"</span>)
+	propagator := otel.GetTextMapPropagator()
+
+	<span class="hljs-keyword">return</span> http.HandlerFunc(<span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">(w http.ResponseWriter, r *http.Request)</span></span> {
+		ctx := propagator.Extract(r.Context(), propagation.HeaderCarrier(r.Header))
+
+		ctx, span := tracer.Start(ctx, r.URL.Path,
+			trace.WithAttributes(
+				attribute.String(<span class="hljs-string">"http.method"</span>, r.Method),
+				attribute.String(<span class="hljs-string">"http.url"</span>, r.URL.String()),
+			),
+		)
+		<span class="hljs-keyword">defer</span> span.End()
+
+		<span class="hljs-comment">// Update request with traced context</span>
+		r = r.WithContext(ctx)
+		next.ServeHTTP(w, r)
+	})
+}
+
+</div></code></pre>
+</div>
+<hr>
+<h2 id="metric-middleware-practice">Metric Middleware Practice</h2>
+<h3 id="time-series-database">Time Series Database</h3>
+<ul>
+<li>Grafana</li>
+<li>Prometheus</li>
+<li>Thanos</li>
+<li>TimescaleDB</li>
+</ul>
+<hr>
+<h1 id="part-4-maintenance">Part 4: Maintenance</h1>
+<div style="display: flex; align-items: flex-start;">
+    <div style="flex: 1;">
+        <ul>
+            <li><strong>Lifecycle Management</strong>
+                <ul>
+                    <li>Regular security patches and updates</li>
+                    <li>Version deprecation and sunset planning</li>
+                    <li>Breaking changes communication strategy</li>
+                    <li>Backward compatibility maintenance</li>
+                </ul>
+            </li>
+            <li><strong>Support and Operations</strong>
+                <ul>
+                    <li>Issue tracking and resolution procedures</li>
+                    <li>Documentation updates and maintenance</li>
+                    <li>API endpoint health checks</li>
+                    <li>Backup and disaster recovery planning</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <img src="./images/part4/maintenance.svg" alt="Maintenance" style="width: 100%; height: 400px;" />
+    </div>
+</div>
+<hr>
+<h2 id="versioning">Versioning</h2>
+<ul>
+<li>Compatibility</li>
+<li>Deprecation</li>
+<li>Breaking Changes</li>
+</ul>
+ <img src="./images/part4/version-flow.svg" alt="Version Flow" style="width: 100%; height: 400px;" />
+<hr>
+<h3 id="log-retention">Log Retention</h3>
+ <img src="./images/part4/retention-flow.svg" alt="Log Retention" style="width: 100%; height: 400px;" />
+<hr>
+<h1 id="part-5-performance">Part 5: Performance</h1>
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; margin-right: 10px;">
+        <h3>Optimization Techniques</h3>
+        <ul>
+            <li>Response caching implementation with appropriate TTL</li>
+            <li>Pagination and result filtering to manage large datasets</li>
+            <li>Compression of response payloads using GZIP</li>
+            <li>Database query optimization and indexing strategies</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <h3>Load Management</h3>
+        <ul>
+            <li>Request throttling and concurrent connection limits</li>
+            <li>Load balancing across multiple server instances</li>
+            <li>Asynchronous processing for heavy operations</li>
+            <li>Connection pooling and resource optimization</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <!-- Placeholder for any additional content or images -->
+         <img src="./images/part5/performance.svg" alt="Performance" style="width: 100%; height: 400px;" />
+    </div>
+</div>
+<hr>
+<h2 id="pagination">Pagination</h2>
+ <img src="./images/part5/pagination-comparison.svg" alt="Pagination" style="width: 100%; height: 400px;" />
+<hr>
+<h3 id="response-compression">Response Compression</h3>
+<h2 id="img-src%22imagespart5compression-flowsvg%22-alt%22compression%22-style%22width-100-height-400px%22"><img src="./images/part5/compression-flow.svg" alt="Compression" style="width: 100%; height: 400px;" /></h2>
+<h2 id="caching">Caching</h2>
+<ul>
+<li>One Instance
+<img src="./images/part5/local-cache-flow.svg" alt="Local Cache" style="width: 100%; height: 400px;" /></li>
+</ul>
+<hr>
+<h2 id="caching-2">Caching (2)</h2>
+<ul>
+<li>Multiple Instance
+<img src="./images/part5/cache-flow.svg" alt="Compression" style="width: 100%; height: 400px;" /></li>
+</ul>
+<hr>
+<h2 id="load-management">Load Management</h2>
+ <img src="./images/part5/load-management.svg" alt="Compression" style="width: 100%; height: 400px;" />
+<hr>
+<h2 id="circuit-breaker">Circuit Breaker</h2>
+<h2 id="img-src%22imagespart5circuit-statessvg%22-alt%22circuit-breaker%22-style%22width-100-height-400px%22"><img src="./images/part5/circuit-states.svg" alt="Circuit Breaker" style="width: 100%; height: 400px;" /></h2>
+<h1 id="part-6-governance">Part 6: Governance</h1>
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; margin-right: 10px;">
+        <h3>Standards and Policies</h3>
+        <ul>
+            <li>API versioning strategy and deprecation policies</li>
+            <li>Documentation standards and maintenance procedures</li>
+            <li>Naming conventions and URI structure guidelines</li>
+            <li>Error handling and status code standardization</li>
+        </ul>
+         <h3>Compliance Management</h3>
+        <ul>
+            <li>Regular compliance audits and reporting</li>
+            <li>Data privacy regulations adherence (GDPR, PDPA)</li>
+            <li>Industry-specific compliance requirements</li>
+            <li>API contract testing and validation</li>
+        </ul>
+    </div>
+    <div style="flex: 1;">
+        <img src="./images/part6/governance.svg" alt="Governance" style="width: 100%; height: 400px;" />
+    </div>
+</div>
+<hr>
+<h2 id="api-documentation">API Documentation</h2>
+<img src="./images/part6/api-document.svg" alt="API Docs" style="width: 100%; height: 400px;" />
+<div style="text-align: right;">
+    <br/>
+    <a href="./api-docs.html">API Docs</a>
+</div>
+<hr>
+<h2 id="api-specification">API Specification</h2>
+<img src="./images/part6/api-specification.svg" alt="API Specification" style="width: 100%; height: 400px;" />
+<hr>
+<h2 id="api-key-validation">API key validation</h2>
+<img src="./images/part6/api-key-validation.svg" alt="API Key Validation" style="width: 100%; height: 400px;" />
+<div style="text-align: right;">
+    <br/>
+    <a href="./api-keys.html">API Keys</a>
+</div>
+---
+<h2 id="data-privacy-regulation">Data privacy regulation</h2>
+<h3 id="gdpr">GDPR</h3>
+<img src="./images/part6/gdpr.svg" alt="GDPR" style="width: 100%; height: 400px;" />
+<hr>
+<h3 id="hipaa">HIPAA</h3>
+<img src="./images/part6/hipaa.svg" alt="HIPAA" style="width: 100%; height: 400px;" />
+<hr>
+<h2 id="implementation-guidelines">Implementation Guidelines</h2>
+<img src="./images/part6/data-privacy-framework.svg" alt="Implementation Guidelines" style="width: 100%; height: 400px;" />
+<div style="text-align: right;">
+    <br/>
+    <a href="./privacy-regulations.html">Data Privacy Regulations</a>
+</div>
+<hr>
+<h2 id="api-design-full-features">API Design Full Features</h2>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TB
+    subgraph Client["Client Layer"]
+        C[Client]
+    end
+
+    subgraph Security["Security & Gateway Layer"]
+        LB["Load Balancer"]
+        APS["API Proxy Server"]
+        
+        subgraph SecurityModules["Security Modules"]
+            Auth["Authentication"]
+            Authz["Authorization"]
+            Val["Validation"]
+            Mask["Masking"]
+            SQLInj["SQL Injection Prevention"]
+            Rate["Rate Limiting"]
+        end
+        
+        subgraph ObservabilityModules["Observability"]
+            Log["API Logging"]
+            Trace["Traceability"]
+            Metric["Metrics"]
+        end
+        
+        subgraph ManagementModules["API Management"]
+            Ver["Versioning"]
+            LogRet["Log Retention"]
+            Pag["Pagination"]
+            Comp["Compression"]
+            Cache["Caching"]
+            LoadBal["Load Balancing"]
+            Circuit["Circuit Breaker"]
+            Doc["Documentation"]
+        end
+        
+        subgraph PrivacyModules["Privacy & Compliance"]
+            KeyVal["Key Validation"]
+            Privacy["Data Privacy"]
+            Consent["Consent Management"]
+        end
+    end
+
+    subgraph ServerLayer["Server Layer"]
+        RTS["API Real-Time Server"]
+        BS["API Batch Server"]
+        ECS["API Eventual Consistency Server"]
+    end
+
+    subgraph DataLayer["Data Layer"]
+        DB[(Database)]
+    end
+
+    C --> LB
+    LB --> APS
+    
+    APS --> SecurityModules
+    APS --> ObservabilityModules
+    APS --> ManagementModules
+    APS --> PrivacyModules
+    
+    APS --> RTS
+    APS --> BS
+    APS --> ECS
+    
+    RTS --> DB
+    BS --> DB
+    ECS --> DB
+
+    %% Styling
+    classDef default fill:#f9f9f9,stroke:#333,stroke-width:2px
+    classDef layer fill:#e4f2ff,stroke:#333,stroke-width:2px
+    classDef module fill:#fffde4,stroke:#333,stroke-width:2px
+    
+    class Client,Security,ServerLayer,DataLayer layer
+    class SecurityModules,ObservabilityModules,ManagementModules,PrivacyModules module
+
+</div></code></pre>
+<hr>
+<h3 id="workshop-challenge">Workshop Challenge</h3>
+<ul>
+<li>Data Validation on Middleware support multiple rules and clean code</li>
+<li>Implement Transform Middleware to transform request and response for masking sensitive data</li>
+<li>Implement Pagination Cursor Types</li>
+<li>Implement Caching Middleware</li>
+<li>Implement Rate Limiting Middleware by Tenant</li>
+<li>Design Data Privacy Regulation Middleware</li>
+<li>Design Consent verification Middleware</li>
+<li>Design Audit logging Middleware</li>
+<li>Generate API Documentation and API Specification</li>
+<li>Discuss about API Design Management Framework</li>
+<li>Discuss about API Design Governance Framework</li>
+</ul>
+<hr>
+<h1 id="questions">Questions?</h1>
+<p>Thank you for your attention!</p>
+
+</body>
+</html>

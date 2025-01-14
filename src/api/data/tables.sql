@@ -97,6 +97,42 @@ CREATE TABLE api_logs (
     created_at DATETIME default current_timestamp
 );
 
+drop table consents;
+drop table consent_logs;
+-- Consent table
+CREATE TABLE IF NOT EXISTS consents (
+    consent_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    patient_id TEXT NOT NULL,
+    source_hospital TEXT NOT NULL,
+    target_hospital TEXT NOT NULL,
+    purpose TEXT NOT NULL,
+    data_categories TEXT NOT NULL, -- Stored as JSON array
+    start_date DATETIME NOT NULL,
+    expiry_date DATETIME NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('PENDING', 'ACTIVE', 'REVOKED', 'EXPIRED')),
+    version INTEGER NOT NULL DEFAULT 1,
+    signature TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ConsentLog table
+CREATE TABLE IF NOT EXISTS consent_logs (
+    consent_log_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    consent_id int NOT NULL,
+    action TEXT NOT NULL CHECK (action IN ('CREATED', 'UPDATED', 'REVOKED', 'ACCESSED')),
+    actor_id TEXT NOT NULL,
+    actor_type TEXT NOT NULL CHECK (actor_type IN ('PATIENT', 'DOCTOR', 'SYSTEM')),
+    timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    description TEXT,
+    FOREIGN KEY (consent_id) REFERENCES consents(id)
+);
+
+-- Index for faster lookups
+CREATE INDEX IF NOT EXISTS idx_consents_patient_id ON consents(patient_id);
+CREATE INDEX IF NOT EXISTS idx_consent_logs_consent_id ON consent_logs(consent_id);
+CREATE INDEX IF NOT EXISTS idx_consents_status ON consents(status);
+
 
 select * from api_logs
 
@@ -267,3 +303,37 @@ SELECT sum(can_execute) as can_execute, sum(can_read) as can_read, sum(can_write
 
 
                select * from users 
+
+-- Consent table
+CREATE TABLE IF NOT EXISTS consents (
+    id TEXT PRIMARY KEY,
+    patient_id TEXT NOT NULL,
+    source_hospital TEXT NOT NULL,
+    target_hospital TEXT NOT NULL,
+    purpose TEXT NOT NULL,
+    data_categories TEXT NOT NULL, -- Stored as JSON array
+    start_date DATETIME NOT NULL,
+    expiry_date DATETIME NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('PENDING', 'ACTIVE', 'REVOKED', 'EXPIRED')),
+    version INTEGER NOT NULL DEFAULT 1,
+    signature TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ConsentLog table
+CREATE TABLE IF NOT EXISTS consent_logs (
+    id TEXT PRIMARY KEY,
+    consent_id TEXT NOT NULL,
+    action TEXT NOT NULL CHECK (action IN ('CREATED', 'UPDATED', 'REVOKED', 'ACCESSED')),
+    actor_id TEXT NOT NULL,
+    actor_type TEXT NOT NULL CHECK (actor_type IN ('PATIENT', 'DOCTOR', 'SYSTEM')),
+    timestamp DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    description TEXT,
+    FOREIGN KEY (consent_id) REFERENCES consents(id)
+);
+
+-- Index for faster lookups
+CREATE INDEX IF NOT EXISTS idx_consents_patient_id ON consents(patient_id);
+CREATE INDEX IF NOT EXISTS idx_consent_logs_consent_id ON consent_logs(consent_id);
+CREATE INDEX IF NOT EXISTS idx_consents_status ON consents(status); 
