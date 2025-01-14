@@ -27,7 +27,7 @@ func NewDB() *DB {
 
 		// Get the absolute path
 		absolutePath, err := filepath.Abs(relativePath)
-		fmt.Println("absolutePath: ", absolutePath)
+		// fmt.Println("absolutePath: ", absolutePath)
 		if err != nil {
 			// fmt.Println(err)
 			return

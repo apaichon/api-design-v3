@@ -69,11 +69,11 @@ func main() {
 
 	// Wait for interrupt signal
 	<-ctx.Done()
-	fmt.Println("\nShutting down servers...")
+	log.Println("\nShutting down servers...")
 
 	// Wait for all servers to stop
 	wg.Wait()
-	fmt.Println("All servers stopped gracefully")
+	log.Println("All servers stopped gracefully")
 }
 
 // runServer starts a single server instance on the specified port
@@ -83,7 +83,7 @@ func runServer(ctx context.Context, port int) {
 
 	// Start server
 	go func() {
-		fmt.Printf("Server is running at http://localhost:%v\n", port)
+		log.Printf("Server is running at http://localhost:%v\n", port)
 		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
 			log.Printf("Server on port %d failed: %v\n", port, err)
 		}
