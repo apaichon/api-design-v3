@@ -1,3 +1,7 @@
+select count(*) from api_logs;
+
+select * from api_logs;
+
 CREATE TABLE users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
     user_name TEXT NOT NULL,
@@ -7,6 +11,8 @@ CREATE TABLE users (
     created_by TEXT NOT NULL,
     status_id INTEGER NOT NULL
 );
+
+select * from users;
 
 CREATE TABLE payments (
     payment_id TEXT PRIMARY KEY,

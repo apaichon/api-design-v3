@@ -3,6 +3,7 @@ package auth
 import (
 	"api/internal/db"
 	"fmt"
+	"time"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -37,7 +38,7 @@ func (cr *UserRepo) GetUsersBySearchText(searchText string, limit, offset int) (
 	}
 	defer rows.Close()
 
-	// time.Sleep(30 * time.Second)
+	time.Sleep(30 * time.Second)
 
 	for rows.Next() {
 		var user User

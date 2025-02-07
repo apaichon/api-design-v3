@@ -239,6 +239,77 @@ The design flow outlines the steps involved in the user registration process.
 9. Improper Assets Management
 10. Insufficient Logging & Monitoring
 
+<!--    
+## Broken Object Level Authorization (BOLA)
+
+Occurs when an API fails to validate that the requesting user has permission to access specific objects
+Example: A user can access another user's data by simply changing the ID in the API request
+Mitigation: Implement proper access controls and validate user permissions for each object access
+
+
+##Broken Authentication
+
+Failures in the implementation of authentication mechanisms
+Common issues include weak password policies, improper session management, and insecure token handling
+Mitigation: Implement strong authentication methods, secure session management, and proper token validation
+
+
+## Excessive Data Exposure
+
+APIs return more data than necessary, often relying on clients to filter sensitive information
+Example: An API returns complete user objects including sensitive fields, expecting the client to hide them
+Mitigation: Filter sensitive data on the server side, return only necessary information
+
+
+## Lack of Resources & Rate Limiting
+
+No restrictions on the size/number of resources requested by the client
+Can lead to DoS attacks or resource exhaustion
+Mitigation: Implement proper rate limiting, throttling, and resource quotas
+
+
+## Broken Function Level Authorization
+
+APIs don't properly verify if the authenticated user has the necessary privileges to perform certain actions
+Example: A regular user can access admin functions by discovering the endpoint
+Mitigation: Implement role-based access control (RBAC) and verify permissions for each function
+
+
+## Mass Assignment
+
+APIs automatically bind client-provided data to internal objects without proper filtering
+Example: A user can modify their role to admin by adding a role parameter to the request
+Mitigation: Explicitly define allowed properties and implement proper data filtering
+
+
+## Security Misconfiguration
+
+Improper security hardening of the API and its components
+Issues include unsecured defaults, incomplete configurations, open cloud storage
+Mitigation: Implement secure defaults, disable unnecessary features, use security headers
+
+
+## Injection
+
+Untrusted data is sent to an interpreter as part of a command or query
+Common types include SQL, NoSQL, OS command injection
+Mitigation: Use parameterized queries, input validation, and proper escaping
+
+
+## Improper Assets Management
+
+Lack of inventory of exposed API hosts and endpoints
+Running outdated, unpatched systems or unnecessary features
+Mitigation: Maintain API documentation, implement versioning, regular security reviews
+
+
+## Insufficient Logging & Monitoring
+
+Lack of proper logging of API activities and security events
+No real-time monitoring or alerting for suspicious activities
+Mitigation: Implement comprehensive logging, monitoring, and alerting systems
+-->
+
 ---
 
 ## Implement API Security
@@ -518,7 +589,7 @@ exists, err := userRepo.ExistsUserByName(user.Username)
 - Use generic messages for security-related errors
 - Log detailed errors server-side only
 
---- 
+---
 
 ## Documentation:
 
@@ -928,6 +999,7 @@ func RateLimitMiddleware(limit rate.Limit, burst int) func(http.Handler) http.Ha
 </div>
 
 ---
+
   
 ## Log Practice
 
@@ -1337,7 +1409,7 @@ func TracingMiddleware(next http.Handler) http.Handler {
 
 ### Response Compression
  <img src="./images/part5/compression-flow.svg" alt="Compression" style="width: 100%; height: 400px;" />
---- 
+---
 
 ## Caching
 
@@ -1420,7 +1492,7 @@ func TracingMiddleware(next http.Handler) http.Handler {
 ### GDPR
 <img src="./images/part6/gdpr.svg" alt="GDPR" style="width: 100%; height: 400px;" />
 
---- 
+---
 
 ### HIPAA
 <img src="./images/part6/hipaa.svg" alt="HIPAA" style="width: 100%; height: 400px;" />
@@ -1522,6 +1594,7 @@ flowchart TB
 ### Workshop Challenge
 
 - Data Validation on Middleware support multiple rules and clean code
+- Design More Secure Token Authentication not available cross origin
 - Implement Transform Middleware to transform request and response for masking sensitive data
 - Implement Pagination Cursor Types
 - Implement Caching Middleware
@@ -1538,5 +1611,3 @@ flowchart TB
 # Questions?
 
 Thank you for your attention!
-
-

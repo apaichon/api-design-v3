@@ -56,6 +56,7 @@ const (
 
 var instance *Config
 var once sync.Once
+const KEY = "2b2aac4013cff37435cb22ba6b0e338e2afbef15ac02abcf0a89de5d06d6ae10"
 
 // LoadConfig loads the configuration from environment variables
 func NewConfig() *Config {
@@ -74,7 +75,7 @@ func NewConfig() *Config {
 			log.Fatalf("Error reading file: %v", err)
 		}
 
-		decryptedEnv, err := security.Decrypt(string(content), "2b2aac4013cff37435cb22ba6b0e338e2afbef15ac02abcf0a89de5d06d6ae10")
+		decryptedEnv, err := security.Decrypt(string(content), KEY)
 		if err != nil {
 			fmt.Println(err)
 			return
