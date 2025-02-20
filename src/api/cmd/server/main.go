@@ -14,6 +14,7 @@ import (
 	"api/config"
 	"api/internal/monitoring"
 	"api/internal/server"
+
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -24,21 +25,27 @@ func init() {
 	cfg = config.NewConfig()
 }
 
-// @title API Service
-// @version 1.0
-// @description A RESTful API service with authentication, payments, and monitoring
-// @termsOfService http://swagger.io/terms/
+// @title           API Service
+// @version         1.0
+// @description     A RESTful API service with authentication, payments, and monitoring
+// @termsOfService  http://swagger.io/terms/
 
-// @contact.name API Support
-// @contact.url http://www.swagger.io/support
-// @contact.email support@swagger.io
+// @contact.name    API Support
+// @contact.url     http://www.swagger.io/support
+// @contact.email   support@swagger.io
 
-// @license.name Apache 2.0
-// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @license.name    Apache 2.0
+// @license.url     http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host localhost:4000
-// @BasePath /api
-// @schemes http https
+// @host           localhost:4000
+// @BasePath       /api
+// @schemes        http https
+
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
+// @description Type "Bearer" followed by a space and JWT token.
+
 func main() {
 	// Parse command line arguments for number of instances
 	var instances int

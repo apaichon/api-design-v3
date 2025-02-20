@@ -13,6 +13,8 @@ import (
 	"api/internal/loan"
 	"api/internal/middleware"
 
+	_ "api/cmd/server/docs" // Import swagger docs
+
 	httpSwagger "github.com/swaggo/http-swagger"
 )
 
@@ -22,6 +24,7 @@ type Server struct {
 	config *config.Config
 	loan   loan.LoanService
 	server *http.Server
+	router *http.ServeMux
 }
 
 // NewServer creates a new server instance
@@ -80,11 +83,12 @@ func (s *Server) Run(ctx context.Context, port int) {
 func (s *Server) createServer(port int) *http.Server {
 	mux := http.NewServeMux()
 
-	// Add Swagger endpoint - Fix the path to avoid conflicts
+	// Update Swagger configuration
 	mux.Handle("/swagger/", httpSwagger.Handler(
 		httpSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", port)),
 		httpSwagger.DeepLinking(true),
 		httpSwagger.DocExpansion("none"),
+		httpSwagger.DomID("swagger-ui"),
 	))
 
 	// @Summary Health check endpoint
@@ -160,4 +164,17 @@ func (s *Server) shutdownServer() {
 	} else {
 		log.Printf("Server on %s stopped gracefully\n", s.server.Addr)
 	}
+}
+
+func swaggerMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.URL.Path == "/swagger/doc.json" {
+			w.Header().Set("Content-Type", "application/json")
+		} else if r.URL.Path == "/swagger/swagger-ui.css" {
+			w.Header().Set("Content-Type", "text/css")
+		} else if r.URL.Path == "/swagger/swagger-ui-bundle.js" {
+			w.Header().Set("Content-Type", "application/javascript")
+		}
+		next.ServeHTTP(w, r)
+	})
 }
