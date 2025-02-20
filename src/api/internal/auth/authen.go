@@ -1,7 +1,7 @@
+// Package auth provides authentication and authorization services
 package auth
 
 import (
-	
 	"crypto/rand"
 	"encoding/hex"
 	"fmt"
@@ -12,6 +12,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
+// cors is a middleware function that sets the CORS headers
 func cors(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
@@ -23,6 +24,7 @@ func cors(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// generateSalt generates a random salt for password hashing
 func generateSalt() string {
 	bytes := make([]byte, 16)
 	if _, err := rand.Read(bytes); err != nil {
@@ -30,7 +32,6 @@ func generateSalt() string {
 	}
 	return hex.EncodeToString(bytes)
 }
-
 
 // DecodeJWTToken decodes a JWT and verifies its signature with a secret key
 func DecodeJWTToken(tokenString, secretKey string) (*JwtClaims, error) {
@@ -58,6 +59,7 @@ func DecodeJWTToken(tokenString, secretKey string) (*JwtClaims, error) {
 	return nil, fmt.Errorf("invalid token or claims")
 }
 
+// getTokenFromRequest retrieves the token from the request header or cookies
 func getTokenFromRequest(r *http.Request) string {
 	// Check if the token is present in the request header
 	token := r.Header.Get("Authorization")
@@ -74,6 +76,7 @@ func getTokenFromRequest(r *http.Request) string {
 	return ""
 }
 
+// validateToken validates the JWT token
 func validateToken(tokenString string) (*jwt.Token, error) {
 	config := config.NewConfig()
 	// Parse and validate the JWT token
@@ -88,5 +91,3 @@ func validateToken(tokenString string) (*jwt.Token, error) {
 
 	return token, nil
 }
-
-

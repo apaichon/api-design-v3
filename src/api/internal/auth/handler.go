@@ -13,7 +13,6 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-
 func GetRequestID(r *http.Request) string {
 	requestID, ok := r.Context().Value("requestContext").(string)
 	fmt.Printf("GetRequestID: Got RequestID: %s\n", requestID)
@@ -28,6 +27,16 @@ func GetRequestID(r *http.Request) string {
 	return requestID
 }
 
+// LoginHandler godoc
+// @Summary User login
+// @Description Authenticate a user and get JWT token
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param credentials body LoginRequest true "Login credentials"
+// @Success 200 {object} LoginResponse
+// @Failure 401 {object} types.ErrorResponse
+// @Router /login [post]
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	cors(w, r)
@@ -152,6 +161,16 @@ func AuthenticationHandler(next http.Handler) http.Handler {
 	})
 }
 
+// RegisterHandler godoc
+// @Summary Register new user
+// @Description Register a new user in the system
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param user body RegisterRequest true "User registration details"
+// @Success 201 {object} User
+// @Failure 400 {object} types.ErrorResponse
+// @Router /register [post]
 func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 	cors(w, r)
 
@@ -270,6 +289,16 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(resp)
 }
 
+// CreateRoleHandler godoc
+// @Summary Create a new role
+// @Description Create a new role in the system
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param role body Role true "Role information"
+// @Success 201 {object} Role
+// @Failure 400 {object} types.ErrorResponse
+// @Router /role [post]
 func CreateRoleHandler(w http.ResponseWriter, r *http.Request) {
 	cors(w, r)
 
@@ -299,7 +328,7 @@ func CreateRoleHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp := handler.NewResponse(http.StatusCreated, "Created", responseData, GetRequestID(r))
-	w.Header().Set("Content-Type", "application/json")	
+	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(resp.Status)
 	json.NewEncoder(w).Encode(resp)
 }

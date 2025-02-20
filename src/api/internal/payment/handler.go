@@ -41,8 +41,8 @@ func (h *PaymentHandler) CreatePaymentHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	payment.CreatedAt = time.Now().Format(time.RFC3339)
-	payment.UpdatedAt = payment.CreatedAt
+	payment.CreatedAt = time.Now()
+	payment.UpdatedAt = time.Now()
 	id, err := h.repo.InsertPayment(&payment)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "Failed to create payment", GetRequestID(r))
@@ -62,7 +62,7 @@ func (h *PaymentHandler) UpdatePaymentHandler(w http.ResponseWriter, r *http.Req
 		return
 	}
 
-	payment.UpdatedAt = time.Now().Format(time.RFC3339)
+	payment.UpdatedAt = time.Now()
 	_, err := h.repo.UpdatePayment(&payment)
 	if err != nil {
 		writeError(w, http.StatusInternalServerError, "Failed to update payment", GetRequestID(r))

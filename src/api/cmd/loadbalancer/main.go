@@ -20,6 +20,7 @@ func init() {
 	cfg = config.NewConfig()
 }
 
+// main is the entry point for the load balancer
 func main() {
 	var (
 		port      int
@@ -27,6 +28,7 @@ func main() {
 		basePort  int
 	)
 
+	// Parse command line arguments
 	flag.IntVar(&port, "port", 3999, "Load balancer port")
 	flag.IntVar(&instances, "n", 3, "Number of backend instances")
 	flag.IntVar(&basePort, "base", 4000, "Base port for backend servers")

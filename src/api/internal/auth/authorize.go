@@ -21,11 +21,13 @@ func init() {
 	appConfig = *config.NewConfig()
 }
 
+// AuthorizeWorkflow is a struct that holds the result and errors of the authorization workflow
 type AuthorizeWorkflow struct {
 	errors []error     // List of errors encountered during the workflow
 	result interface{} // The result of the workflow operations
 }
 
+// IsSuperAdmin checks if the user is a super admin
 func (auth *AuthorizeWorkflow) IsSuperAdmin(userId int) *AuthorizeWorkflow {
 	// roleRepo := NewRoleRepo()
 	isSuperAdmin, err := roleRepo.GetUserIsSuperAdminByUserID(userId)
@@ -36,6 +38,7 @@ func (auth *AuthorizeWorkflow) IsSuperAdmin(userId int) *AuthorizeWorkflow {
 	return auth
 }
 
+// GetUserIDFromToken retrieves the user ID from the token
 func (auth *AuthorizeWorkflow) GetUserIDFromToken(p graphql.ResolveParams) *AuthorizeWorkflow {
 	userKey := ContextKey("user")
 	tokenString, _ := p.Context.Value(userKey).(string)
@@ -48,15 +51,18 @@ func (auth *AuthorizeWorkflow) GetUserIDFromToken(p graphql.ResolveParams) *Auth
 	return auth
 }
 
+// GetResult returns the result of the authorization workflow
 func (auth *AuthorizeWorkflow) GetResult() interface{} {
 	return auth.result
 }
 
+// GetError returns the errors of the authorization workflow
 func (auth *AuthorizeWorkflow) GetError() interface{} {
 	joinedErr := errors.Join(auth.errors...)
 	return joinedErr
 }
 
+// addError adds an error to the authorization workflow
 func (auth *AuthorizeWorkflow) addError(err error) *AuthorizeWorkflow {
 	if err != nil {
 		auth.errors = append(auth.errors, err)
@@ -64,11 +70,13 @@ func (auth *AuthorizeWorkflow) addError(err error) *AuthorizeWorkflow {
 	return auth
 }
 
+// setResult sets the result of the authorization workflow
 func (auth *AuthorizeWorkflow) setResult(res interface{}) *AuthorizeWorkflow {
 	auth.result = res
 	return auth
 }
 
+// GetUserName retrieves the user name from the token
 func GetUserName(p graphql.ResolveParams) (JwtClaims, error) {
 	tokenString, _ := p.Context.Value(userKey).(string)
 	config := config.NewConfig()
@@ -76,6 +84,7 @@ func GetUserName(p graphql.ResolveParams) (JwtClaims, error) {
 	return *claim, err
 }
 
+// GetUserPermission retrieves the user permission from the token
 func GetUserPermission(r *http.Request) ([]*UserPermissionView, error) {
 	tokenString := getTokenFromRequest(r)
 	claims, err := DecodeJWTToken(tokenString, config.SecretKey)
@@ -90,6 +99,7 @@ func GetUserPermission(r *http.Request) ([]*UserPermissionView, error) {
 	return userPermission, nil
 }
 
+// HasUserApiPermission checks if the user has the API permission
 func HasUserApiPermission(r *http.Request) (bool, error) {
 	tokenString := getTokenFromRequest(r)
 	claims, err := DecodeJWTToken(tokenString, config.SecretKey)
@@ -135,6 +145,7 @@ func HasUserApiPermission(r *http.Request) (bool, error) {
 	return false, nil
 }
 
+// AuthorizeUserMiddleware is a middleware function that checks if the user has the API permission
 func AuthorizeUserMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		cors(w, r)

@@ -106,32 +106,69 @@ func (pr *PaymentRepo) GetPayments(params db.PaginationParams) (*db.PaginationRe
 // Get PaymentByID retrieves a payment by its ID from the database
 func (pr *PaymentRepo) GetPaymentByID(id string) (*Payment, error) {
 	var payment Payment
-	row, err := pr.DB.QueryRow("SELECT * FROM payments WHERE payment_id = ?", id)
+	row, err := pr.DB.QueryRow(`
+		SELECT 
+			payment_id, id, amount, payment_method, payment_date,
+			pay_to, note, status, description, currency,
+			created_at, updated_at 
+		FROM payments 
+		WHERE payment_id = ? OR id = ?`,
+		id, id,
+	)
 
 	if err != nil {
 		return nil, err
 	}
 
-	row.Scan(
+	err = row.Scan(
 		&payment.PaymentID,
+		&payment.ID,
 		&payment.Amount,
 		&payment.PaymentMethod,
 		&payment.PaymentDate,
 		&payment.PayTo,
 		&payment.Note,
 		&payment.Status,
+		&payment.Description,
+		&payment.Currency,
 		&payment.CreatedAt,
 		&payment.UpdatedAt,
 	)
+	if err != nil {
+		return nil, err
+	}
 
 	return &payment, nil
 }
 
 // Insert Payment inserts a new payment into the database
 func (pr *PaymentRepo) InsertPayment(payment *Payment) (string, error) {
-	payment.PaymentID = uuid.New().String()
-	_, err := pr.DB.Insert("INSERT INTO payments (payment_id, amount, payment_method, payment_date, pay_to, note, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-		payment.PaymentID, payment.Amount, payment.PaymentMethod, payment.PaymentDate, payment.PayTo, payment.Note, payment.Status, payment.CreatedAt, payment.UpdatedAt)
+	if payment.PaymentID == "" {
+		payment.PaymentID = uuid.New().String()
+	}
+	if payment.ID == "" {
+		payment.ID = payment.PaymentID
+	}
+
+	_, err := pr.DB.Insert(`
+		INSERT INTO payments (
+			payment_id, id, amount, payment_method, payment_date, 
+			pay_to, note, status, description, currency, 
+			created_at, updated_at
+		) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+		payment.PaymentID,
+		payment.ID,
+		payment.Amount,
+		payment.PaymentMethod,
+		payment.PaymentDate,
+		payment.PayTo,
+		payment.Note,
+		payment.Status,
+		payment.Description,
+		payment.Currency,
+		payment.CreatedAt,
+		payment.UpdatedAt,
+	)
 	if err != nil {
 		fmt.Printf("Error inserting payment: %v\n", err)
 		return "", err
@@ -141,8 +178,23 @@ func (pr *PaymentRepo) InsertPayment(payment *Payment) (string, error) {
 
 // Update Payment updates an existing payment in the database
 func (pr *PaymentRepo) UpdatePayment(payment *Payment) (string, error) {
-	_, err := pr.DB.Update("UPDATE payments SET amount=?, payment_method=?, payment_date=?, pay_to=?, note=?, status=?, updated_at=? WHERE payment_id=?",
-		payment.Amount, payment.PaymentMethod, payment.PaymentDate, payment.PayTo, payment.Note, payment.Status, payment.UpdatedAt, payment.PaymentID)
+	_, err := pr.DB.Update(`
+		UPDATE payments SET 
+			amount=?, payment_method=?, payment_date=?, 
+			pay_to=?, note=?, status=?, description=?, 
+			currency=?, updated_at=? 
+		WHERE payment_id=?`,
+		payment.Amount,
+		payment.PaymentMethod,
+		payment.PaymentDate,
+		payment.PayTo,
+		payment.Note,
+		payment.Status,
+		payment.Description,
+		payment.Currency,
+		payment.UpdatedAt,
+		payment.PaymentID,
+	)
 	if err != nil {
 		return "", err
 	}

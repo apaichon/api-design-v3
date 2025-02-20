@@ -6,26 +6,52 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-type User struct {
-	UserID    int       `json:"user_id"`
-	Username  string    `json:"user_name"`
-	Password  string    `json:"password"`
-	Salt      string    `json:"salt"`
-	CreatedAt time.Time `json:"created_at"`
-	CreatedBy string    `json:"created_by"`
-	StatusID  int       `json:"status_id"`
+// LoginRequest represents the login request payload
+type LoginRequest struct {
+	Username string `json:"username" example:"johndoe"`
+	Password string `json:"password" example:"secret123"`
 }
 
+// LoginResponse represents the login response
+type LoginResponse struct {
+	Token string `json:"token" example:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."`
+}
+
+// Role represents a user role
 type Role struct {
+	ID           string    `json:"id" example:"1"`
 	RoleID       int       `json:"role_id"`
 	RoleName     string    `json:"role_name"`
 	RoleDesc     string    `json:"role_desc,omitempty"`
+	Name         string    `json:"name" example:"admin"`
+	Permissions  []string  `json:"permissions" example:"read,write"`
 	IsSuperAdmin bool      `json:"is_super_admin"`
 	CreatedAt    time.Time `json:"created_at"`
 	CreatedBy    string    `json:"created_by"`
 	UpdatedAt    time.Time `json:"updated_at"`
 	UpdatedBy    string    `json:"updated_by"`
 	StatusID     int       `json:"status_id"`
+}
+
+// User represents a user in the system
+type User struct {
+	ID        string    `json:"id" example:"1"`
+	UserID    int       `json:"user_id"` // Keep for backward compatibility
+	Username  string    `json:"username" example:"johndoe"`
+	Password  string    `json:"password,omitempty"`
+	Salt      string    `json:"salt,omitempty"`
+	Email     string    `json:"email" example:"john@example.com"`
+	RoleID    string    `json:"role_id" example:"1"`
+	CreatedAt time.Time `json:"created_at"`
+	CreatedBy string    `json:"created_by"`
+	StatusID  int       `json:"status_id"`
+}
+
+// RegisterRequest represents the registration request payload
+type RegisterRequest struct {
+	Username string `json:"username" example:"johndoe"`
+	Password string `json:"password" example:"secret123"`
+	Email    string `json:"email" example:"john@example.com"`
 }
 
 type UserRoles struct {
